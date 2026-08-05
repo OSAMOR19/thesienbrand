@@ -5,15 +5,17 @@ import ProductCard from './ProductCard'
 interface ProductCarouselProps {
   id?: string
   title: string
-  showTabs?: boolean
   products: Product[]
+  showTabs?: boolean
+  onViewAll?: () => void
 }
 
 export default function ProductCarousel({
   id = 'best-sellers',
   title,
-  showTabs = false,
   products,
+  showTabs = false,
+  onViewAll,
 }: ProductCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -72,15 +74,15 @@ export default function ProductCarousel({
         <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight font-sans">
           {showTabs ? selectedTab : title}
         </h2>
-        <a
-          href="#all-products"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-900 text-xs sm:text-sm font-bold text-gray-800 transition-colors"
+        <button
+          onClick={onViewAll}
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-gray-200 hover:border-gray-900 text-xs sm:text-sm font-bold text-gray-800 transition-colors cursor-pointer"
         >
           <span>View all</span>
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
-        </a>
+        </button>
       </div>
 
       {/* Carousel Wrapper with Left/Right Arrows */}

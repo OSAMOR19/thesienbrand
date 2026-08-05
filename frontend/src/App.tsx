@@ -84,6 +84,7 @@ export default function App() {
               id="best-sellers"
               title="Our Best Selling Beaded Bags"
               products={bestSellers}
+              onViewAll={() => setCurrentView('collections')}
             />
 
             {/* 3. Brand Story Feature Box (BEADED BAG®) */}
@@ -97,6 +98,7 @@ export default function App() {
               id="beaded-handbags"
               title="Beaded Handbag"
               showTabs={true}
+              onViewAll={() => setCurrentView('collections')}
               products={products.filter((p) => [
                 'green-beaded-purse',
                 'chain-strap-beaded-handbag',
