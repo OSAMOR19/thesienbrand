@@ -14,7 +14,7 @@ body {
   margin: 0;
   background-color: #FFF6F0; /* Soft Peach / Warm Nude */
   color: #2B141F; /* Deep Plum Dark */
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Snell Roundhand', 'Alex Brush', 'Great Vibes', 'Plus Jakarta Sans', cursive, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -29,7 +29,7 @@ body {
 }
 
 .font-script {
-  font-family: 'Alex Brush', 'Great Vibes', 'Italianno', cursive;
+  font-family: 'Snell Roundhand', 'Alex Brush', 'Great Vibes', 'Italianno', cursive;
 }
 
 @media (prefers-reduced-motion: reduce) {

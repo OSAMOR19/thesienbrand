@@ -44,18 +44,9 @@ export default function Hero({ onOpenCollections }: HeroProps) {
           </div>
 
           {/* Main Title */}
-          <div className="space-y-3">
-            <div>
-              <img
-                src="/images/the-sien-brand-logo.png"
-                alt="The Sien Brand"
-                className="h-12 sm:h-16 w-auto bg-white/95 p-2.5 rounded-2xl shadow-xl inline-block"
-              />
-            </div>
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-sans drop-shadow-md">
-              Handcrafted Beaded Bags: Minimal. Elegant. Iconic.
-            </h1>
-          </div>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-sans drop-shadow-md">
+            Handcrafted Beaded Bags: Minimal. Elegant. Iconic.
+          </h1>
 
           {/* Shop Button */}
           <div className="pt-2">
