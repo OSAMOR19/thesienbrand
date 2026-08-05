@@ -8,6 +8,7 @@ interface ProductCarouselProps {
   products: Product[]
   showTabs?: boolean
   onViewAll?: () => void
+  onSelectProduct?: (product: Product) => void
 }
 
 export default function ProductCarousel({
@@ -16,6 +17,7 @@ export default function ProductCarousel({
   products,
   showTabs = false,
   onViewAll,
+  onSelectProduct,
 }: ProductCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
@@ -120,7 +122,7 @@ export default function ProductCarousel({
               key={product.id}
               className="flex-none w-[70vw] sm:w-[45vw] md:w-[30vw] lg:w-[23%] snap-start"
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} onSelectProduct={onSelectProduct} />
             </div>
           ))}
         </div>

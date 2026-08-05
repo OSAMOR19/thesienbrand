@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { faqs } from '../data/products'
 
-export default function FAQ() {
+interface FAQProps {
+  onOpenContact?: () => void
+  onOpenFaq?: () => void
+}
+
+export default function FAQ({ onOpenContact, onOpenFaq }: FAQProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggle = (i: number) => {
@@ -18,22 +23,22 @@ export default function FAQ() {
               Need Help or Have a Question?
             </h2>
             <p className="text-xs sm:text-sm text-gray-600 leading-relaxed max-w-sm mx-auto font-normal">
-              We value clarity and trust. Find quick answers to help you choose your perfect beret — or <strong className="text-gray-900 font-semibold">contact us</strong> for more details.
+              We value clarity and trust. Find quick answers to help you choose your perfect handbag — or <strong className="text-gray-900 font-semibold">contact us</strong> for more details.
             </p>
 
             <div className="space-y-3 pt-2">
-              <a
-                href="#contact"
-                className="block w-full py-3.5 rounded-xl bg-[#0C3B36] text-white font-bold text-xs sm:text-sm hover:bg-[#082925] transition-colors text-center shadow-xs"
+              <button
+                onClick={onOpenContact || (() => { window.location.hash = 'contact' })}
+                className="block w-full py-3.5 rounded-xl bg-[#0C3B36] text-white font-bold text-xs sm:text-sm hover:bg-[#082925] transition-colors text-center shadow-xs cursor-pointer"
               >
                 Contact Us
-              </a>
-              <a
-                href="#faqs"
-                className="block w-full py-3.5 rounded-xl border border-gray-200 text-gray-800 font-bold text-xs sm:text-sm hover:border-gray-900 transition-colors text-center"
+              </button>
+              <button
+                onClick={onOpenFaq || (() => { window.location.hash = 'faqs' })}
+                className="block w-full py-3.5 rounded-xl border border-gray-200 text-gray-800 font-bold text-xs sm:text-sm hover:border-gray-900 transition-colors text-center cursor-pointer"
               >
                 FAQs Page
-              </a>
+              </button>
             </div>
           </div>
 

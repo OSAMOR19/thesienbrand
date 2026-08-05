@@ -6,7 +6,7 @@ interface BlogPostPageProps {
 const blogArticles: Record<string, { title: string; date: string; category: string; image: string; content: string[] }> = {
   'are-beaded-bags-good-for-evening-wear': {
     title: 'Are Beaded Bags Good for Evening Wear?',
-    date: 'July 14, 2026',
+    date: 'July 15, 2026',
     category: 'Style & Trends',
     image: '/images/are-beaded-bags-good-for-evening-wear.webp',
     content: [
@@ -17,7 +17,7 @@ const blogArticles: Record<string, { title: string; date: string; category: stri
   },
   'how-do-i-make-my-beaded-bag-stiff': {
     title: 'How Do I Make My Beaded Bag Stiff?',
-    date: 'July 18, 2026',
+    date: 'July 22, 2026',
     category: 'Craftsmanship & Care',
     image: '/images/how-do-i-make-my-beaded-bag-stiff.webp',
     content: [
@@ -28,7 +28,7 @@ const blogArticles: Record<string, { title: string; date: string; category: stri
   },
   'how-many-beads-do-you-need-to-make-a-beaded-bag': {
     title: 'How Many Beads Do You Need to Make a Beaded Bag?',
-    date: 'July 22, 2026',
+    date: 'July 29, 2026',
     category: 'Artisan Guides',
     image: '/images/how-many-beads-do-you-need-to-make-a-beaded-bag.webp',
     content: [
@@ -37,7 +37,41 @@ const blogArticles: Record<string, { title: string; date: string; category: stri
       'Every Beaded Bag® piece is meticulously hand-strung by master artisans, spending up to 24 hours per handbag.',
     ],
   },
+  'where-to-store-handbags-in-a-house': {
+    title: 'Where to store handbags in a house?',
+    date: 'June 17, 2026',
+    category: 'Storage & Care',
+    image: '/images/where-to-store-handbags-in-a-house.webp',
+    content: [
+      'Finding the ideal location to store your handbag collection keeps your home organized while protecting your valuable accessories from dust, moisture, and direct sunlight.',
+      'Dedicated closet shelving, breathable dust bags, and climate-controlled storage spots ensure that your beaded purses maintain their vibrant color and pristine condition.',
+      'Avoid storing bags in damp basements or harsh lighting to prevent discoloration and deterioration of delicate bead threads.',
+    ],
+  },
+  'is-it-okay-to-hang-handbags': {
+    title: 'Is it okay to hang handbags?',
+    date: 'June 10, 2026',
+    category: 'Care Tips',
+    image: '/images/is-it-okay-to-hang-handbags.webp',
+    content: [
+      'Hanging handbags by their handles or shoulder straps might seem convenient, but over prolonged periods it can cause strap stretching and distortion.',
+      'For structured beaded bags, upright placement on padded shelves or within storage cubbies is strongly recommended to preserve both handle shape and beaded body structure.',
+      'If hanging is necessary, use wide, padded hooks designed specifically to distribute strap weight evenly.',
+    ],
+  },
+  'how-to-store-beaded-handbags': {
+    title: 'How to store beaded handbags?',
+    date: 'June 3, 2026',
+    category: 'Maintenance Guide',
+    image: '/images/how-to-store-beaded-handbags.webp',
+    content: [
+      'Handcrafted beaded bags require gentle care and proper storage techniques to prevent bead snagging, thread loosening, or surface scratching.',
+      'Always stuff your beaded bags with soft acid-free tissue paper, enclose them in breathable cotton dust covers, and store them flat or upright on a soft surface.',
+      'Keep beaded items separated from heavily embellished clothing or metallic zippers to prevent friction and snagging.',
+    ],
+  },
 }
+
 
 export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPageProps) {
   const article = blogArticles[postSlug] || blogArticles['are-beaded-bags-good-for-evening-wear']

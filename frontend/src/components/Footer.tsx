@@ -6,6 +6,8 @@ interface FooterProps {
   onOpenContact?: () => void
   onOpenAboutUs?: () => void
   onOpenCollections?: () => void
+  onOpenBlog?: () => void
+  onOpenFaq?: () => void
   onOpenPolicy?: (policy: string) => void
 }
 
@@ -15,6 +17,8 @@ export default function Footer({
   onOpenContact,
   onOpenAboutUs,
   onOpenCollections,
+  onOpenBlog,
+  onOpenFaq,
   onOpenPolicy,
 }: FooterProps) {
   const [email, setEmail] = useState('')
@@ -147,10 +151,10 @@ export default function Footer({
                 <li><button onClick={onOpenTrackOrder} className="hover:text-white transition-colors">Track Order</button></li>
                 <li><button onClick={onOpenAuth} className="hover:text-white transition-colors">Orders</button></li>
                 <li><button onClick={onOpenContact} className="hover:text-white transition-colors">Contact</button></li>
-                <li><a href="#faqs" className="hover:text-white transition-colors">FAQs</a></li>
+                <li><button onClick={onOpenFaq} className="hover:text-white transition-colors">FAQs</button></li>
                 <li><button onClick={onOpenAboutUs} className="hover:text-white transition-colors">About Us</button></li>
                 <li><button onClick={onOpenCollections} className="hover:text-white transition-colors">Sitemap</button></li>
-                <li><a href="#blog" className="hover:text-white transition-colors">Blog</a></li>
+                <li><button onClick={onOpenBlog} className="hover:text-white transition-colors">Blog</button></li>
                 <li><button onClick={onOpenAuth} className="hover:text-white transition-colors">Profile</button></li>
               </ul>
             </div>

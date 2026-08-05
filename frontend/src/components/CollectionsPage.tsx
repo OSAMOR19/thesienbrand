@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import ProductCard from './ProductCard'
-import { products } from '../data/products'
+import { products, type Product } from '../data/products'
 
 interface CollectionsPageProps {
   onSelectCategory: (name: string) => void
   onBackToHome: () => void
+  onSelectProduct?: (product: Product) => void
 }
 
 export const collectionGridCards = [
@@ -60,7 +61,7 @@ export const collectionGridCards = [
   },
 ]
 
-export default function CollectionsPage({ onSelectCategory, onBackToHome }: CollectionsPageProps) {
+export default function CollectionsPage({ onSelectCategory, onBackToHome, onSelectProduct }: CollectionsPageProps) {
   const [lineupTab, setLineupTab] = useState<'Best Sellers' | 'Beaded Handbags' | 'Beaded Evening Bag'>('Best Sellers')
 
   const getLineupProducts = () => {
@@ -153,7 +154,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome }: Coll
               key={product.id}
               className="flex-none w-[70vw] sm:w-[42vw] lg:w-[23.5%] snap-start"
             >
-              <ProductCard product={product} />
+              <ProductCard product={product} onSelectProduct={onSelectProduct} />
             </div>
           ))}
         </div>

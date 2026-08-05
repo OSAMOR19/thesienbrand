@@ -2,9 +2,13 @@ import { blogPosts } from '../data/products'
 
 interface BlogSectionProps {
   onSelectPost?: (slug: string) => void
+  onSeeAll?: () => void
 }
 
-export default function BlogSection({ onSelectPost }: BlogSectionProps) {
+export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps) {
+  // Show first 3 posts on homepage section
+  const featuredPosts = blogPosts.slice(0, 3)
+
   return (
     <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-8">
@@ -12,7 +16,7 @@ export default function BlogSection({ onSelectPost }: BlogSectionProps) {
           Beaded Bag Blog
         </h2>
         <button
-          onClick={() => onSelectPost?.('are-beaded-bags-good-for-evening-wear')}
+          onClick={onSeeAll || (() => onSelectPost?.('how-many-beads-do-you-need-to-make-a-beaded-bag'))}
           className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#0C3B36] hover:underline cursor-pointer"
         >
           <span>See all</span>
@@ -23,7 +27,8 @@ export default function BlogSection({ onSelectPost }: BlogSectionProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {blogPosts.map((post) => (
+        {featuredPosts.map((post) => (
+
           <article
             key={post.id}
             onClick={() => onSelectPost?.(post.id)}

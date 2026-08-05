@@ -7,6 +7,7 @@ export interface Product {
   material: string
   image: string
   hoverImage?: string
+  galleryImages?: string[]
   isBestSeller?: boolean
 }
 
@@ -19,7 +20,15 @@ export const products: Product[] = [
     collection: 'Best Sellers',
     color: 'White / Blue',
     material: 'Glass & Pearl Beads',
-    image: '/images/bags-with-beads-white-beaded-shoulder-bag-blue-217.webp',
+    image: '/images/bags-with-beads-1.png',
+    hoverImage: '/images/bags-with-beads-2.png',
+    galleryImages: [
+      '/images/bags-with-beads-1.png',
+      '/images/bags-with-beads-2.png',
+      '/images/bags-with-beads-3.png',
+      '/images/bags-with-beads-4.png',
+      '/images/bags-with-beads-5.png',
+    ],
     isBestSeller: true,
   },
   {
@@ -29,7 +38,15 @@ export const products: Product[] = [
     collection: 'Best Sellers',
     color: 'Beige / Floral',
     material: 'Artisan Glass Beads',
-    image: '/images/floral-beaded-purse-rectangular-shoulder-bag-beige-175.webp',
+    image: '/images/floral-beaded-purse-1.png',
+    hoverImage: '/images/floral-beaded-purse-2.png',
+    galleryImages: [
+      '/images/floral-beaded-purse-1.png',
+      '/images/floral-beaded-purse-2.png',
+      '/images/floral-beaded-purse-3.png',
+      '/images/floral-beaded-purse-4.png',
+      '/images/floral-beaded-purse-5.png',
+    ],
     isBestSeller: true,
   },
   {
@@ -39,7 +56,15 @@ export const products: Product[] = [
     collection: 'Best Sellers',
     color: 'Multicolor Floral',
     material: 'Faceted Sequins & Beads',
-    image: '/images/beaded-flower-bag-rectangular-clutch-brown-strap-pink-833.webp',
+    image: '/images/beaded-flower-bag-1.png',
+    hoverImage: '/images/beaded-flower-bag-2.png',
+    galleryImages: [
+      '/images/beaded-flower-bag-1.png',
+      '/images/beaded-flower-bag-2.png',
+      '/images/beaded-flower-bag-3.jpg',
+      '/images/beaded-flower-bag-4.jpg',
+      '/images/beaded-flower-bag-5.png',
+    ],
     isBestSeller: true,
   },
   {
@@ -49,7 +74,15 @@ export const products: Product[] = [
     collection: 'Best Sellers',
     color: 'White / Folk Art',
     material: 'Handcrafted Beads',
-    image: '/images/colorful-beaded-bag-white-shoulder-multicolor-792.webp',
+    image: '/images/colorful-beaded-bag-1.png',
+    hoverImage: '/images/colorful-beaded-bag-2.png',
+    galleryImages: [
+      '/images/colorful-beaded-bag-1.png',
+      '/images/colorful-beaded-bag-2.png',
+      '/images/colorful-beaded-bag-3.png',
+      '/images/colorful-beaded-bag-4.png',
+      '/images/colorful-beaded-bag-5.png',
+    ],
     isBestSeller: true,
   },
   {
@@ -59,7 +92,13 @@ export const products: Product[] = [
     collection: 'Best Sellers',
     color: 'Black',
     material: 'Glossy Acrylic Beads',
-    image: '/images/black-beaded-purse-glossy-handbag-handle-813.webp',
+    image: '/images/black-beaded-purse-1.png',
+    hoverImage: '/images/black-beaded-purse-2.png',
+    galleryImages: [
+      '/images/black-beaded-purse-1.png',
+      '/images/black-beaded-purse-2.png',
+      '/images/black-beaded-purse-3.png',
+    ],
     isBestSeller: true,
   },
   {
@@ -315,27 +354,55 @@ export const styleHighlights = [
 
 export const blogPosts = [
   {
-    id: 'how-many-beads',
+    id: 'how-many-beads-do-you-need-to-make-a-beaded-bag',
     title: 'How many beads do you need to make a beaded bag?',
     summary: 'Discover how many beads you need to make a beaded bag, tips on bead selection, and create stylish, personalized handbags with our expert guide.',
     date: 'July 29, 2026',
     image: '/images/How_many_beads_do_you_need_to_make_a_beaded_bag.webp',
+    category: 'Artisan Guides',
   },
   {
-    id: 'how-to-make-stiff',
+    id: 'how-do-i-make-my-beaded-bag-stiff',
     title: 'How do I make my beaded bag stiff?',
     summary: 'Discover how do I make my beaded bag stiff with expert tips for a firm, durable finish. Perfect for stylish, long-lasting handcrafted beaded bags.',
     date: 'July 22, 2026',
     image: '/images/How_do_I_make_my_beaded_bag_stiff.webp',
+    category: 'Craftsmanship & Care',
   },
   {
-    id: 'evening-wear',
+    id: 'are-beaded-bags-good-for-evening-wear',
     title: 'Are beaded bags good for evening wear?',
     summary: 'Discover if beaded bags are good for evening wear and see how elegant handcrafted beaded purses add a chic touch to any sophisticated event or occasion.',
     date: 'July 15, 2026',
     image: '/images/Are_beaded_bags_good_for_evening_wear.webp',
+    category: 'Style & Trends',
+  },
+  {
+    id: 'where-to-store-handbags-in-a-house',
+    title: 'Where to store handbags in a house?',
+    summary: 'Discover where to store handbags in a house with smart, stylish storage ideas. Keep beaded bags organized, protected, and ready to use anytime.',
+    date: 'June 17, 2026',
+    image: '/images/where-to-store-handbags-in-a-house.webp',
+    category: 'Storage & Care',
+  },
+  {
+    id: 'is-it-okay-to-hang-handbags',
+    title: 'Is it okay to hang handbags?',
+    summary: 'Wondering is it okay to hang handbags? Discover smart storage tips, preserve bag shapes, and keep designer purses looking chic and organized.',
+    date: 'June 10, 2026',
+    image: '/images/is-it-okay-to-hang-handbags.webp',
+    category: 'Care Tips',
+  },
+  {
+    id: 'how-to-store-beaded-handbags',
+    title: 'How to store beaded handbags?',
+    summary: 'Discover how to store beaded handbags to keep your delicate purses pristine, prevent damage, and ensure your designer bags last for years.',
+    date: 'June 3, 2026',
+    image: '/images/how-to-store-beaded-handbags.webp',
+    category: 'Maintenance Guide',
   },
 ]
+
 
 export const faqs = [
   {

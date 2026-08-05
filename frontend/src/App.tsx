@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AnnouncementBar from './components/AnnouncementBar'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -25,12 +25,16 @@ import PolicyModal from './components/PolicyModal'
 import CollectionsPage from './components/CollectionsPage'
 import ContactPage from './components/ContactPage'
 import AboutUsPage from './components/AboutUsPage'
+import BlogListPage from './components/BlogListPage'
 import BlogPostPage from './components/BlogPostPage'
-import { products } from './data/products'
+import FaqPage from './components/FaqPage'
+import ProductDetailPage from './components/ProductDetailPage'
+import { products, type Product } from './data/products'
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'collections' | 'contact' | 'about' | 'blog-post'>('home')
+  const [currentView, setCurrentView] = useState<'home' | 'collections' | 'contact' | 'about' | 'blog-list' | 'blog-post' | 'faqs' | 'product-detail'>('home')
   const [selectedPostSlug, setSelectedPostSlug] = useState<string>('are-beaded-bags-good-for-evening-wear')
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
@@ -40,12 +44,58 @@ export default function App() {
 
   const bestSellers = products.filter((p) => p.isBestSeller)
 
+  const handleSelectProduct = (prod: Product) => {
+    setSelectedProduct(prod)
+    setCurrentView('product-detail')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash
+      if (hash === '#contact') {
+        setCurrentView('contact')
+        setTimeout(() => {
+          const el = document.getElementById('contact')
+          if (el) el.scrollIntoView({ behavior: 'smooth' })
+          else window.scrollTo({ top: 0, behavior: 'smooth' })
+        }, 100)
+      } else if (hash === '#faqs' || hash === '#faq') {
+        setCurrentView('faqs')
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else if (hash === '#blog' || hash === '#blogs') {
+        setCurrentView('blog-list')
+      }
+    }
+
+    handleHashChange()
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  const handleOpenContact = () => {
+    window.location.hash = 'contact'
+    setCurrentView('contact')
+    setTimeout(() => {
+      const el = document.getElementById('contact')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+      else window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, 50)
+  }
+
+  const handleOpenFaq = () => {
+    window.location.hash = 'faqs'
+    setCurrentView('faqs')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#111827] font-sans antialiased selection:bg-[#0C3B36] selection:text-white">
       {/* Top Announcement Bar */}
       <AnnouncementBar
         onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}
-        onOpenContact={() => setCurrentView('contact')}
+        onOpenContact={handleOpenContact}
+        onOpenFaq={handleOpenFaq}
       />
 
       {/* Navigation Header */}
@@ -64,15 +114,36 @@ export default function App() {
           <CollectionsPage
             onSelectCategory={(cat) => setActiveCategory(cat)}
             onBackToHome={() => setCurrentView('home')}
+            onSelectProduct={handleSelectProduct}
           />
         ) : currentView === 'contact' ? (
           <ContactPage onBackToHome={() => setCurrentView('home')} />
         ) : currentView === 'about' ? (
           <AboutUsPage onBackToHome={() => setCurrentView('home')} />
+        ) : currentView === 'faqs' ? (
+          <FaqPage
+            onBackToHome={() => setCurrentView('home')}
+            onOpenContact={handleOpenContact}
+            onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}
+          />
+        ) : currentView === 'product-detail' && selectedProduct ? (
+          <ProductDetailPage
+            product={selectedProduct}
+            onBack={() => setCurrentView('home')}
+            onOpenContact={handleOpenContact}
+          />
+        ) : currentView === 'blog-list' ? (
+          <BlogListPage
+            onSelectPost={(slug) => {
+              setSelectedPostSlug(slug)
+              setCurrentView('blog-post')
+            }}
+            onBackToHome={() => setCurrentView('home')}
+          />
         ) : currentView === 'blog-post' ? (
           <BlogPostPage
             postSlug={selectedPostSlug}
-            onBackToBlog={() => setCurrentView('home')}
+            onBackToBlog={() => setCurrentView('blog-list')}
           />
         ) : (
           <>
@@ -85,6 +156,7 @@ export default function App() {
               title="Our Best Selling Beaded Bags"
               products={bestSellers}
               onViewAll={() => setCurrentView('collections')}
+              onSelectProduct={handleSelectProduct}
             />
 
             {/* 3. Brand Story Feature Box (BEADED BAG®) */}
@@ -99,6 +171,7 @@ export default function App() {
               title="Beaded Handbag"
               showTabs={true}
               onViewAll={() => setCurrentView('collections')}
+              onSelectProduct={handleSelectProduct}
               products={products.filter((p) => [
                 'green-beaded-purse',
                 'chain-strap-beaded-handbag',
@@ -127,13 +200,14 @@ export default function App() {
             <CollectionsBannerSection onOpenCollections={() => setCurrentView('collections')} />
 
             {/* 11. FAQ Accordion */}
-            <FAQ />
+            <FAQ onOpenContact={handleOpenContact} onOpenFaq={handleOpenFaq} />
 
             {/* 11. Brand Values Bar */}
             <BrandValuesSection />
 
             {/* 12. Journal / Blog Articles */}
             <BlogSection
+              onSeeAll={() => setCurrentView('blog-list')}
               onSelectPost={(slug) => {
                 setSelectedPostSlug(slug)
                 setCurrentView('blog-post')
@@ -143,13 +217,16 @@ export default function App() {
         )}
       </main>
 
+
       {/* Footer */}
       <Footer
         onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}
         onOpenAuth={() => setIsAuthModalOpen(true)}
-        onOpenContact={() => setCurrentView('contact')}
+        onOpenContact={handleOpenContact}
+        onOpenFaq={handleOpenFaq}
         onOpenAboutUs={() => setCurrentView('about')}
         onOpenCollections={() => setCurrentView('collections')}
+        onOpenBlog={() => setCurrentView('blog-list')}
         onOpenPolicy={(policy) => setActivePolicy(policy)}
       />
 
