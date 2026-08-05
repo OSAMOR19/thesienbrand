@@ -44,15 +44,24 @@ export default function Hero({ onOpenCollections }: HeroProps) {
           </div>
 
           {/* Main Title */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-sans drop-shadow-md">
-            Beaded Bag: Minimal. Elegant. Iconic.
-          </h1>
+          <div className="space-y-3">
+            <div>
+              <img
+                src="/images/the-sien-brand-logo.png"
+                alt="The Sien Brand"
+                className="h-12 sm:h-16 w-auto bg-white/95 p-2.5 rounded-2xl shadow-xl inline-block"
+              />
+            </div>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-sans drop-shadow-md">
+              Handcrafted Beaded Bags: Minimal. Elegant. Iconic.
+            </h1>
+          </div>
 
           {/* Shop Button */}
           <div className="pt-2">
             <button
               onClick={onOpenCollections}
-              className="inline-flex items-center gap-2 bg-[#0C3B36] text-white font-extrabold px-8 py-4 rounded-2xl text-sm hover:bg-[#082825] transition-all duration-200 shadow-xl cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#3B1E2B] text-white font-extrabold px-8 py-4 rounded-2xl text-sm hover:bg-[#2B141F] transition-all duration-200 shadow-xl cursor-pointer"
             >
               <span>Explore All Collections</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

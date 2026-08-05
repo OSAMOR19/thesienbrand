@@ -48,7 +48,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
       {/* Breadcrumb */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <nav className="flex items-center gap-2 text-xs font-semibold text-gray-500">
-          <button onClick={onBack} className="hover:text-[#0C3B36] transition-colors cursor-pointer">
+          <button onClick={onBack} className="hover:text-[#3B1E2B] transition-colors cursor-pointer">
             Home
           </button>
           <span className="text-gray-400">›</span>
@@ -67,7 +67,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
         {/* Left Column: Image Viewer & Gallery Thumbnails */}
         <div className="lg:col-span-6 space-y-4 sticky top-24">
           {/* Featured Main Image with Left/Right Arrows & Dash Indicators */}
-          <div className="relative aspect-[4/5] bg-[#F4F3EE] rounded-3xl overflow-hidden shadow-2xs border border-gray-100 flex items-center justify-center p-6 group">
+          <div className="relative aspect-[4/5] bg-[#F8ECE2] rounded-3xl overflow-hidden shadow-2xs border border-[#F0DFD1] flex items-center justify-center p-6 group">
             {/* Left Navigation Arrow */}
             {gallery.length > 1 && (
               <button
@@ -124,7 +124,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
               <button
                 key={idx}
                 onClick={() => setSelectedImageIndex(idx)}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 bg-[#F4F3EE] p-1 transition-all cursor-pointer ${
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 bg-[#F8ECE2] p-1 transition-all cursor-pointer ${
                   selectedImageIndex === idx ? 'border-gray-900 scale-95 shadow-xs' : 'border-transparent opacity-75 hover:opacity-100'
                 }`}
               >
@@ -168,7 +168,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
           <div className="space-y-3 pt-2">
             <button
               onClick={handleAddToCart}
-              className="w-full py-4 px-6 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-extrabold text-sm sm:text-base transition-all cursor-pointer shadow-md active:scale-98"
+              className="w-full py-4 px-6 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-extrabold text-sm sm:text-base transition-all cursor-pointer shadow-md active:scale-98"
             >
               Add to cart | {formatPrice(product.priceUSD)}
             </button>
@@ -370,14 +370,14 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
 
           <button
             onClick={() => setReviewsOpen(!reviewsOpen)}
-            className="px-6 py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
+            className="px-6 py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
           >
             {reviewsOpen ? 'Close Form' : 'Write a review'}
           </button>
         </div>
 
         {reviewsOpen && (
-          <div className="bg-[#F7F6F0] rounded-2xl p-6 space-y-4 max-w-xl animate-fadeIn">
+          <div className="bg-[#F8ECE2] rounded-2xl p-6 space-y-4 max-w-xl animate-fadeIn">
             <h3 className="font-bold text-sm text-gray-900">Share Your Experience</h3>
             {submittedReview ? (
               <div className="text-xs text-emerald-800 font-bold bg-emerald-50 p-3 rounded-xl">
@@ -409,7 +409,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
                   onChange={(e) => setUserReviewText(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-xs bg-white outline-none resize-none"
                 />
-                <button type="submit" className="px-5 py-2 rounded-xl bg-[#0C3B36] text-white font-bold text-xs">
+                <button type="submit" className="px-5 py-2 rounded-xl bg-[#3B1E2B] text-white font-bold text-xs">
                   Submit Review
                 </button>
               </form>
@@ -439,7 +439,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
         <div className="max-w-xl w-full flex items-center gap-4">
           <button
             onClick={handleAddToCart}
-            className="w-full py-3.5 px-6 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-extrabold text-sm sm:text-base transition-colors shadow-md cursor-pointer"
+            className="w-full py-3.5 px-6 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-extrabold text-sm sm:text-base transition-colors shadow-md cursor-pointer"
           >
             Add to cart | {formatPrice(product.priceUSD)}
           </button>

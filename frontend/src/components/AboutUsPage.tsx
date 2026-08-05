@@ -8,7 +8,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
       {/* Breadcrumb */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <button onClick={onBackToHome} className="hover:text-[#0C3B36] transition-colors">
+          <button onClick={onBackToHome} className="hover:text-[#3B1E2B] transition-colors">
             Home
           </button>
           <span>/</span>
@@ -24,7 +24,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
 
       {/* Header Banner */}
       <div className="space-y-4 text-center max-w-2xl mx-auto">
-        <span className="inline-block px-3.5 py-1 rounded-full bg-[#0C3B36]/10 text-[#0C3B36] font-bold text-[11px] uppercase tracking-wider">
+        <span className="inline-block px-3.5 py-1 rounded-full bg-[#3B1E2B]/10 text-[#3B1E2B] font-bold text-[11px] uppercase tracking-wider">
           OUR ARTISAN STORY
         </span>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight font-sans">
@@ -36,7 +36,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
       </div>
 
       {/* Image Banner */}
-      <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F4F3EE]">
+      <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
         <img
           src="/images/beaded-bag-collection-multicolor-display.webp"
           alt="Beaded Bag Brand Story Showcase"
@@ -58,15 +58,15 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-gray-100 text-center">
           <div className="space-y-1">
-            <span className="text-3xl font-extrabold text-[#0C3B36]">10,000+</span>
+            <span className="text-3xl font-extrabold text-[#3B1E2B]">10,000+</span>
             <p className="text-xs text-gray-500 font-medium">Happy Customers Worldwide</p>
           </div>
           <div className="space-y-1">
-            <span className="text-3xl font-extrabold text-[#0C3B36]">100%</span>
+            <span className="text-3xl font-extrabold text-[#3B1E2B]">100%</span>
             <p className="text-xs text-gray-500 font-medium">Handcrafted & Quality Checked</p>
           </div>
           <div className="space-y-1">
-            <span className="text-3xl font-extrabold text-[#0C3B36]">FREE</span>
+            <span className="text-3xl font-extrabold text-[#3B1E2B]">FREE</span>
             <p className="text-xs text-gray-500 font-medium">Worldwide Shipping Always</p>
           </div>
         </div>

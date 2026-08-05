@@ -60,8 +60,8 @@ export default function ProductCarousel({
               <button
                 key={cat}
                 onClick={() => setSelectedTab(cat)}
-                className={`hover:text-[#0C3B36] transition-colors ${
-                  selectedTab === cat ? 'text-[#0C3B36] font-extrabold border-b-2 border-[#0C3B36] pb-3 -mb-3' : 'font-semibold text-gray-700'
+                className={`hover:text-[#3B1E2B] transition-colors ${
+                  selectedTab === cat ? 'text-[#3B1E2B] font-extrabold border-b-2 border-[#3B1E2B] pb-3 -mb-3' : 'font-semibold text-gray-700'
                 }`}
               >
                 {cat}
@@ -139,7 +139,7 @@ export default function ProductCarousel({
                 }
               }}
               className={`h-1 rounded-full transition-all duration-300 ${
-                activeIndex === idx ? 'w-8 bg-[#0C3B36]' : 'w-4 bg-gray-300 hover:bg-gray-400'
+                activeIndex === idx ? 'w-8 bg-[#3B1E2B]' : 'w-4 bg-gray-300 hover:bg-gray-400'
               }`}
             />
           ))}

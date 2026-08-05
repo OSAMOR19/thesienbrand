@@ -81,7 +81,7 @@ export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPagePro
       {/* Breadcrumb */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <button onClick={onBackToBlog} className="hover:text-[#0C3B36] transition-colors">
+          <button onClick={onBackToBlog} className="hover:text-[#3B1E2B] transition-colors">
             Blog
           </button>
           <span>/</span>
@@ -97,7 +97,7 @@ export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPagePro
 
       {/* Header */}
       <div className="space-y-4 text-center max-w-2xl mx-auto">
-        <span className="inline-block px-3 py-1 rounded-full bg-[#0C3B36]/10 text-[#0C3B36] font-bold text-[11px] uppercase tracking-wider">
+        <span className="inline-block px-3 py-1 rounded-full bg-[#3B1E2B]/10 text-[#3B1E2B] font-bold text-[11px] uppercase tracking-wider">
           {article.category}
         </span>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight font-sans">
@@ -109,7 +109,7 @@ export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPagePro
       </div>
 
       {/* Main Image */}
-      <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F4F3EE]">
+      <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
         <img
           src={article.image}
           alt={article.title}

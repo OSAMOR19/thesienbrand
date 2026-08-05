@@ -37,7 +37,7 @@ export default function CurrencySelectorModal({ isOpen, onClose }: CurrencySelec
                 key={c.code}
                 onClick={() => handleSelect(c)}
                 className={`w-full flex items-center justify-between p-3.5 rounded-xl text-left transition-all ${
-                  isSelected ? 'bg-[#0C3B36]/5 font-semibold text-[#0C3B36]' : 'hover:bg-gray-50 text-gray-700'
+                  isSelected ? 'bg-[#3B1E2B]/5 font-semibold text-[#3B1E2B]' : 'hover:bg-gray-50 text-gray-700'
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -49,7 +49,7 @@ export default function CurrencySelectorModal({ isOpen, onClose }: CurrencySelec
                 </div>
                 <div className="font-bold text-sm">
                   {c.symbol} {c.code}
-                  {isSelected && <span className="ml-2 text-[#0C3B36]">✓</span>}
+                  {isSelected && <span className="ml-2 text-[#3B1E2B]">✓</span>}
                 </div>
               </button>
             )

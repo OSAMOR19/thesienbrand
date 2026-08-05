@@ -55,7 +55,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </div>
 
         {submitted ? (
-          <div className="bg-emerald-50 text-[#0C3B36] p-6 rounded-2xl text-center space-y-2 border border-emerald-100">
+          <div className="bg-emerald-50 text-[#3B1E2B] p-6 rounded-2xl text-center space-y-2 border border-emerald-100">
             <div className="text-2xl">📩</div>
             <h3 className="font-extrabold text-sm">Check your inbox</h3>
             <p className="text-xs text-gray-600">
@@ -63,7 +63,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
             </p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-4 text-xs font-bold underline text-[#0C3B36]"
+              className="mt-4 text-xs font-bold underline text-[#3B1E2B]"
             >
               Use a different email
             </button>
@@ -125,7 +125,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   type="checkbox"
                   checked={emailOffers}
                   onChange={(e) => setEmailOffers(e.target.checked)}
-                  className="w-4 h-4 rounded-md border-gray-300 text-[#0C3B36] focus:ring-0"
+                  className="w-4 h-4 rounded-md border-gray-300 text-[#3B1E2B] focus:ring-0"
                 />
                 <span>Email me with news and offers</span>
               </label>

@@ -64,9 +64,9 @@ export default function CategoryViewModal({ categoryName, onClose }: CategoryVie
         </div>
 
         {/* Filters and Sorting Toolbar matching HTTrack dump */}
-        <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-[#F4F3EE] rounded-2xl border border-gray-100">
+        <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-[#F8ECE2] rounded-2xl border border-gray-100">
           <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
-            <svg className="w-4 h-4 text-[#0C3B36]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-[#3B1E2B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
             <span>Filters &amp; Sort</span>
@@ -80,7 +80,7 @@ export default function CategoryViewModal({ categoryName, onClose }: CategoryVie
               id="sort-select"
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value as any)}
-              className="bg-white border border-gray-200 rounded-full px-3 py-1.5 text-xs font-bold text-gray-800 outline-none focus:border-[#0C3B36]"
+              className="bg-white border border-gray-200 rounded-full px-3 py-1.5 text-xs font-bold text-gray-800 outline-none focus:border-[#3B1E2B]"
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>

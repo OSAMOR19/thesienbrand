@@ -12,20 +12,24 @@ html {
 
 body {
   margin: 0;
-  background-color: #F9F9F6;
-  color: #141414;
-  font-family: 'Space Grotesk', sans-serif;
+  background-color: #FFF6F0; /* Soft Peach / Warm Nude */
+  color: #2B141F; /* Deep Plum Dark */
+  font-family: 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: #1B3936;
-  color: #F9F9F6;
+  background: #3B1E2B; /* Deep Plum / Dark Eggplant */
+  color: #FFF6F0;
 }
 
 :focus-visible {
-  outline: 2px solid #1B3936;
+  outline: 2px solid #3B1E2B;
   outline-offset: 3px;
+}
+
+.font-script {
+  font-family: 'Alex Brush', 'Great Vibes', 'Italianno', cursive;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -52,8 +56,8 @@ body {
   height: 1px;
   background-image: repeating-linear-gradient(
     to right,
-    #1B3936 0,
-    #1B3936 6px,
+    #3B1E2B 0,
+    #3B1E2B 6px,
     transparent 6px,
     transparent 12px
   );

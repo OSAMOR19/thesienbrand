@@ -33,7 +33,7 @@ export default function ColorBarSection() {
           <a
             key={card.name}
             href={card.link}
-            className="group flex flex-col items-start bg-[#F4F3EE] rounded-3xl p-3 sm:p-4 hover:shadow-md transition-all duration-300"
+            className="group flex flex-col items-start bg-[#F8ECE2] rounded-3xl p-3 sm:p-4 hover:shadow-md transition-all duration-300"
           >
             <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-3 bg-white">
               <img
@@ -43,7 +43,7 @@ export default function ColorBarSection() {
                 loading="lazy"
               />
             </div>
-            <h3 className="font-extrabold text-gray-900 text-xs sm:text-sm tracking-tight font-sans group-hover:text-[#0C3B36] transition-colors">
+            <h3 className="font-extrabold text-gray-900 text-xs sm:text-sm tracking-tight font-sans group-hover:text-[#3B1E2B] transition-colors">
               {card.name}
             </h3>
           </a>

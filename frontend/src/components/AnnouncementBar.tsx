@@ -10,7 +10,7 @@ export default function AnnouncementBar({
   onOpenFaq,
 }: AnnouncementBarProps) {
   return (
-    <div className="bg-[#0C3B36] text-white text-[13px] font-medium py-2.5 px-4 border-b border-white/10">
+    <div className="bg-[#3B1E2B] text-white text-[13px] font-medium py-2.5 px-4 border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-center gap-5 sm:gap-6 text-xs sm:text-[13px] flex-wrap">
         <button
           onClick={onOpenTrackOrder}
@@ -31,7 +31,7 @@ export default function AnnouncementBar({
           FAQs
         </button>
         <span className="text-white/40 hidden sm:inline">—</span>
-        <span className="bg-white text-[#0C3B36] font-bold px-3 py-1 rounded-md text-[11px] uppercase tracking-wider shadow-xs whitespace-nowrap">
+        <span className="bg-white text-[#3B1E2B] font-bold px-3 py-1 rounded-md text-[11px] uppercase tracking-wider shadow-xs whitespace-nowrap">
           FREE SHIPPING FOREVER
         </span>
         <span className="font-bold tracking-wider uppercase whitespace-nowrap">

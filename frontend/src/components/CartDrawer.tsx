@@ -37,8 +37,8 @@ export default function CartDrawer() {
         </div>
 
         {/* Free Shipping Progress */}
-        <div className="bg-[#0C3B36]/5 px-6 py-3 border-b border-gray-100">
-          <div className="text-xs font-semibold text-[#0C3B36] mb-1 text-center">
+        <div className="bg-[#3B1E2B]/5 px-6 py-3 border-b border-gray-100">
+          <div className="text-xs font-semibold text-[#3B1E2B] mb-1 text-center">
             {progressPercent >= 100 ? (
               <span>🎉 You unlocked FREE Shipping Worldwide!</span>
             ) : (
@@ -47,7 +47,7 @@ export default function CartDrawer() {
           </div>
           <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#0C3B36] transition-all duration-300"
+              className="h-full bg-[#3B1E2B] transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -63,7 +63,7 @@ export default function CartDrawer() {
               <p className="text-gray-500 text-sm font-medium">Your cart is currently empty.</p>
               <button
                 onClick={close}
-                className="px-6 py-2.5 rounded-full bg-[#0C3B36] text-white text-xs font-bold hover:bg-[#072623] transition-colors"
+                className="px-6 py-2.5 rounded-full bg-[#3B1E2B] text-white text-xs font-bold hover:bg-[#2B141F] transition-colors"
               >
                 Explore Collections
               </button>
@@ -88,7 +88,7 @@ export default function CartDrawer() {
                           ✕
                         </button>
                       </div>
-                      <p className="text-xs font-semibold text-[#0C3B36] mt-0.5">{formatPrice(product.priceUSD)}</p>
+                      <p className="text-xs font-semibold text-[#3B1E2B] mt-0.5">{formatPrice(product.priceUSD)}</p>
                     </div>
 
                     <div className="flex items-center justify-between mt-2">
@@ -127,7 +127,7 @@ export default function CartDrawer() {
               <span className="font-medium text-gray-600">Subtotal</span>
               <span className="font-extrabold text-lg text-gray-900">{formatPrice(subtotal)}</span>
             </div>
-            <button className="w-full bg-[#0C3B36] hover:bg-[#072623] text-white py-3.5 rounded-full text-sm font-bold shadow-lg transition-all active:scale-98">
+            <button className="w-full bg-[#3B1E2B] hover:bg-[#2B141F] text-white py-3.5 rounded-full text-sm font-bold shadow-lg transition-all active:scale-98">
               Proceed to Checkout →
             </button>
             <p className="text-[11px] text-gray-400 text-center">

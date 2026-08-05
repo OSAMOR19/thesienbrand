@@ -66,7 +66,7 @@ export default function Header({
         {/* Mobile Hamburger */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 text-gray-700 hover:text-[#0C3B36]"
+          className="lg:hidden p-2 text-gray-700 hover:text-[#3B1E2B]"
           aria-label="Toggle Menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,32 +74,23 @@ export default function Header({
           </svg>
         </button>
 
-        {/* Official Logo matching live site */}
+        {/* Official Logo */}
         <button
           onClick={onGoHome}
-          className="flex items-center gap-2 cursor-pointer"
+          className="flex items-center gap-2 cursor-pointer py-1"
         >
           <img
-            src="/images/beaded-bag-logo.png"
-            alt="Beaded Bag®"
-            className="h-7 sm:h-8 w-auto object-contain"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none'
-              const fallback = e.currentTarget.nextElementSibling
-              if (fallback) fallback.classList.remove('hidden')
-            }}
+            src="/images/the-sien-brand-logo.png"
+            alt="The Sien Brand"
+            className="h-10 sm:h-12 md:h-14 w-auto object-contain transition-transform hover:scale-105"
           />
-          <span className="hidden font-extrabold text-xl sm:text-2xl tracking-tighter text-[#0C1A17] font-sans items-center">
-            BEADED<span className="font-light tracking-tight">BAG</span>
-            <span className="text-[10px] align-top text-[#0C3B36] font-bold ml-0.5">®</span>
-          </span>
         </button>
 
         {/* Desktop Main Navigation */}
         <nav className="hidden lg:flex items-center gap-7 text-[13px] font-bold tracking-wider text-gray-800 uppercase">
           <button
             onClick={onOpenCollections}
-            className="hover:text-[#0C3B36] transition-colors py-2 uppercase cursor-pointer"
+            className="hover:text-[#3B1E2B] transition-colors py-2 uppercase cursor-pointer"
           >
             ALL BEADED BAGS
           </button>
@@ -110,7 +101,7 @@ export default function Header({
             onMouseEnter={() => setActiveDropdown('type')}
             onMouseLeave={() => setActiveDropdown(null)}
           >
-            <button className="flex items-center gap-1 hover:text-[#0C3B36] transition-colors uppercase">
+            <button className="flex items-center gap-1 hover:text-[#3B1E2B] transition-colors uppercase">
               SHOP BY TYPE
               <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'type' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -124,7 +115,7 @@ export default function Header({
                     <button
                       key={item.name}
                       onClick={() => handleCategoryClick(item.category)}
-                      className="w-full text-left block px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#0C3B36]/5 hover:text-[#0C3B36] rounded-lg transition-colors capitalize"
+                      className="w-full text-left block px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#3B1E2B]/5 hover:text-[#3B1E2B] rounded-lg transition-colors capitalize"
                     >
                       {item.name}
                     </button>
@@ -140,7 +131,7 @@ export default function Header({
             onMouseEnter={() => setActiveDropdown('color')}
             onMouseLeave={() => setActiveDropdown(null)}
           >
-            <button className="flex items-center gap-1 hover:text-[#0C3B36] transition-colors uppercase">
+            <button className="flex items-center gap-1 hover:text-[#3B1E2B] transition-colors uppercase">
               SHOP BY COLOR
               <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'color' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -154,7 +145,7 @@ export default function Header({
                     <button
                       key={item.name}
                       onClick={() => handleCategoryClick(item.category)}
-                      className="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#0C3B36]/5 hover:text-[#0C3B36] rounded-lg transition-colors capitalize"
+                      className="w-full text-left flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-[#3B1E2B]/5 hover:text-[#3B1E2B] rounded-lg transition-colors capitalize"
                     >
                       <span
                         className="w-3.5 h-3.5 rounded-full border border-gray-300 shadow-xs"
@@ -174,7 +165,7 @@ export default function Header({
             onMouseEnter={() => setActiveDropdown('material')}
             onMouseLeave={() => setActiveDropdown(null)}
           >
-            <button className="flex items-center gap-1 hover:text-[#0C3B36] transition-colors uppercase">
+            <button className="flex items-center gap-1 hover:text-[#3B1E2B] transition-colors uppercase">
               SHOP BY MATERIAL
               <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === 'material' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
@@ -188,7 +179,7 @@ export default function Header({
                     <button
                       key={item.name}
                       onClick={() => handleCategoryClick(item.category)}
-                      className="w-full text-left block px-3 py-2 rounded-lg hover:bg-[#0C3B36]/5 transition-colors"
+                      className="w-full text-left block px-3 py-2 rounded-lg hover:bg-[#3B1E2B]/5 transition-colors"
                     >
                       <div className="text-xs font-bold text-gray-800 capitalize">{item.name}</div>
                       <div className="text-[11px] font-normal text-gray-500 normal-case">{item.desc}</div>
@@ -205,7 +196,7 @@ export default function Header({
           {/* Currency Button with SVG Nigerian flag */}
           <button
             onClick={onOpenCurrency}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-200 hover:border-[#0C3B36] text-xs font-bold text-gray-800 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-gray-200 hover:border-[#3B1E2B] text-xs font-bold text-gray-800 transition-colors"
           >
             {currentCurrency.code === 'NGN' ? (
               <svg className="w-4 h-3 rounded-xs overflow-hidden" viewBox="0 0 3 2">
@@ -225,7 +216,7 @@ export default function Header({
           {/* Search Button */}
           <button
             onClick={onOpenSearch}
-            className="p-2 text-gray-700 hover:text-[#0C3B36] hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 text-gray-700 hover:text-[#3B1E2B] hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Search"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -236,7 +227,7 @@ export default function Header({
           {/* Account Button */}
           <button
             onClick={onOpenAuth}
-            className="p-2 text-gray-700 hover:text-[#0C3B36] hover:bg-gray-100 rounded-full transition-colors hidden sm:block"
+            className="p-2 text-gray-700 hover:text-[#3B1E2B] hover:bg-gray-100 rounded-full transition-colors hidden sm:block"
             aria-label="Account"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,13 +238,13 @@ export default function Header({
           {/* Cart Bag Icon with Count Badge */}
           <button
             onClick={openCart}
-            className="relative p-2 text-gray-800 hover:text-[#0C3B36] transition-colors"
+            className="relative p-2 text-gray-800 hover:text-[#3B1E2B] transition-colors"
             aria-label="View Cart"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
-            <span className="absolute top-1 right-1 bg-[#0C3B36] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
+            <span className="absolute top-1 right-1 bg-[#3B1E2B] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-white">
               {cartCount}
             </span>
           </button>
@@ -268,7 +259,7 @@ export default function Header({
               setMobileMenuOpen(false)
               onOpenCollections?.()
             }}
-            className="block py-2 text-gray-800 hover:text-[#0C3B36] font-bold uppercase text-left w-full cursor-pointer"
+            className="block py-2 text-gray-800 hover:text-[#3B1E2B] font-bold uppercase text-left w-full cursor-pointer"
           >
             ALL BEADED BAGS
           </button>
@@ -279,7 +270,7 @@ export default function Header({
                 <button
                   key={item.name}
                   onClick={() => handleCategoryClick(item.category)}
-                  className="text-left text-gray-700 py-1 hover:text-[#0C3B36]"
+                  className="text-left text-gray-700 py-1 hover:text-[#3B1E2B]"
                 >
                   {item.name}
                 </button>

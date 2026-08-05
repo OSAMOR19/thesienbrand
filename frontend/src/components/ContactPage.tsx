@@ -35,7 +35,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
         <nav className="flex items-center gap-2 text-xs font-semibold text-gray-500">
           <button
             onClick={onBackToHome}
-            className="hover:text-[#0C3B36] transition-colors cursor-pointer"
+            className="hover:text-[#3B1E2B] transition-colors cursor-pointer"
           >
             Home
           </button>
@@ -58,7 +58,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
 
         {/* Form Container matching Live Screenshot 1 & 2 */}
         {submitted ? (
-          <div className="bg-[#EBF4EE] border border-[#0C3B36]/20 text-[#0C3B36] p-8 sm:p-10 rounded-3xl text-center space-y-4">
+          <div className="bg-[#EBF4EE] border border-[#3B1E2B]/20 text-[#3B1E2B] p-8 sm:p-10 rounded-3xl text-center space-y-4">
             <div className="text-4xl">✨</div>
             <h3 className="text-2xl font-extrabold">Thank you for reaching out!</h3>
             <p className="text-sm text-gray-700 max-w-md mx-auto leading-relaxed">
@@ -69,7 +69,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
                 setSubmitted(false)
                 setFormData({ firstName: '', lastName: '', phone: '', email: '', message: '' })
               }}
-              className="mt-4 px-6 py-3 rounded-2xl bg-[#0C3B36] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#082925] transition-colors"
+              className="mt-4 px-6 py-3 rounded-2xl bg-[#3B1E2B] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#2B141F] transition-colors"
             >
               Send Another Message
             </button>
@@ -137,7 +137,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
             <div>
               <button
                 type="submit"
-                className="w-full py-4 px-6 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-sm sm:text-base transition-colors shadow-xs cursor-pointer"
+                className="w-full py-4 px-6 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-sm sm:text-base transition-colors shadow-xs cursor-pointer"
               >
                 Send
               </button>
@@ -163,7 +163,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
                   const el = document.getElementById('faqs-accordion')
                   if (el) el.scrollIntoView({ behavior: 'smooth' })
                 }}
-                className="w-full py-3.5 rounded-xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-sm transition-colors text-center cursor-pointer shadow-xs"
+                className="w-full py-3.5 rounded-xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-sm transition-colors text-center cursor-pointer shadow-xs"
               >
                 FAQs Page
               </button>
@@ -183,7 +183,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
                   <div key={index} className="py-4 first:pt-0 last:pb-0">
                     <button
                       onClick={() => toggleFaq(index)}
-                      className="w-full text-left flex items-center justify-between font-bold text-sm sm:text-base text-gray-900 hover:text-[#0C3B36] transition-colors py-1 cursor-pointer"
+                      className="w-full text-left flex items-center justify-between font-bold text-sm sm:text-base text-gray-900 hover:text-[#3B1E2B] transition-colors py-1 cursor-pointer"
                     >
                       <span>{faq.q}</span>
                       <svg
@@ -228,7 +228,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
             </div>
             <div className="flex items-center gap-3">
               <span className="text-base">✉️</span>
-              <a href="mailto:info@beaded-bag.com" className="hover:text-[#0C3B36] underline">
+              <a href="mailto:info@beaded-bag.com" className="hover:text-[#3B1E2B] underline">
                 info@beaded-bag.com
               </a>
             </div>

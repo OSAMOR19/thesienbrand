@@ -56,7 +56,7 @@ const faqData: FaqCategory[] = [
         question: 'What is your return window?',
         answer: (
           <p>
-            We accept returns within <strong className="text-gray-900 font-semibold">30 days from the delivery date</strong>. To start a return, please email us at <a href="mailto:info.beadedbag@gmail.com" className="underline hover:text-[#0C3B36]">info.beadedbag@gmail.com</a> or use our Contact page. Please include your order number, item details, and a photo of the product.
+            We accept returns within <strong className="text-gray-900 font-semibold">30 days from the delivery date</strong>. To start a return, please email us at <a href="mailto:info.beadedbag@gmail.com" className="underline hover:text-[#3B1E2B]">info.beadedbag@gmail.com</a> or use our Contact page. Please include your order number, item details, and a photo of the product.
           </p>
         ),
       },
@@ -166,7 +166,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
       <nav className="flex items-center gap-2 text-xs font-semibold text-gray-500">
         <button
           onClick={onBackToHome}
-          className="hover:text-[#0C3B36] transition-colors cursor-pointer"
+          className="hover:text-[#3B1E2B] transition-colors cursor-pointer"
         >
           Home
         </button>
@@ -198,7 +198,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
           </div>
           <button
             onClick={onOpenTrackOrder}
-            className="w-full py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
           >
             Track Order
           </button>
@@ -219,7 +219,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
           </div>
           <button
             onClick={onOpenContact}
-            className="w-full py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
           >
             Contact Us
           </button>
@@ -240,7 +240,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
           </div>
           <button
             onClick={() => scrollToCategory('shipping')}
-            className="w-full py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
           >
             Learn More
           </button>
@@ -261,7 +261,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
           </div>
           <button
             onClick={() => scrollToCategory('returns')}
-            className="w-full py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
           >
             Learn More
           </button>
@@ -282,7 +282,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
           </div>
           <button
             onClick={() => scrollToCategory('payments')}
-            className="w-full py-3 rounded-2xl bg-[#0C3B36] hover:bg-[#082925] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
+            className="w-full py-3 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-xs sm:text-sm transition-colors cursor-pointer shadow-xs"
           >
             Learn More
           </button>
@@ -313,7 +313,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
                   <div key={idx} className="py-5">
                     <button
                       onClick={() => toggleItem(key)}
-                      className="w-full text-left flex items-center justify-between font-bold text-base sm:text-lg text-gray-900 hover:text-[#0C3B36] transition-colors py-1 cursor-pointer font-sans"
+                      className="w-full text-left flex items-center justify-between font-bold text-base sm:text-lg text-gray-900 hover:text-[#3B1E2B] transition-colors py-1 cursor-pointer font-sans"
                     >
                       <span>{item.question}</span>
                       <svg

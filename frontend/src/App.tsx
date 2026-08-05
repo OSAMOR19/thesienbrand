@@ -90,7 +90,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-[#111827] font-sans antialiased selection:bg-[#0C3B36] selection:text-white">
+    <div className="min-h-screen bg-[#FFF6F0] text-[#111827] font-sans antialiased selection:bg-[#3B1E2B] selection:text-white">
       {/* Top Announcement Bar */}
       <AnnouncementBar
         onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}

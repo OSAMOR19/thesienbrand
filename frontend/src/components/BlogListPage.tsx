@@ -12,7 +12,7 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
       <nav className="flex items-center gap-2 text-xs font-semibold text-gray-500">
         <button
           onClick={onBackToHome}
-          className="hover:text-[#0C3B36] transition-colors cursor-pointer"
+          className="hover:text-[#3B1E2B] transition-colors cursor-pointer"
         >
           Home
         </button>
@@ -45,7 +45,7 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
                 />
               </div>
               <div className="p-6 space-y-3">
-                <h2 className="font-extrabold text-lg text-gray-900 group-hover:text-[#0C3B36] transition-colors line-clamp-2 font-sans leading-snug">
+                <h2 className="font-extrabold text-lg text-gray-900 group-hover:text-[#3B1E2B] transition-colors line-clamp-2 font-sans leading-snug">
                   {post.title}
                 </h2>
                 <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed font-normal">

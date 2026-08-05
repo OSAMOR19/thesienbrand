@@ -50,7 +50,7 @@ export default function DiscoverStyleSection() {
               href="#best-sellers"
               className="flex-none w-[75vw] sm:w-[42vw] lg:w-[31%] group/card snap-start"
             >
-              <div className="relative aspect-[3/4] bg-[#F4F3EE] rounded-3xl overflow-hidden mb-3 shadow-xs group-hover/card:shadow-md transition-shadow">
+              <div className="relative aspect-[3/4] bg-[#F8ECE2] rounded-3xl overflow-hidden mb-3 shadow-xs group-hover/card:shadow-md transition-shadow">
                 <img
                   src={item.image}
                   alt={item.title}

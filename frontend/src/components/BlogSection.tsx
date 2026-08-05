@@ -17,7 +17,7 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
         </h2>
         <button
           onClick={onSeeAll || (() => onSelectPost?.('how-many-beads-do-you-need-to-make-a-beaded-bag'))}
-          className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#0C3B36] hover:underline cursor-pointer"
+          className="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#3B1E2B] hover:underline cursor-pointer"
         >
           <span>See all</span>
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
                 <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
                   {post.date}
                 </span>
-                <h3 className="font-extrabold text-base text-gray-900 group-hover:text-[#0C3B36] transition-colors line-clamp-2 font-sans">
+                <h3 className="font-extrabold text-base text-gray-900 group-hover:text-[#3B1E2B] transition-colors line-clamp-2 font-sans">
                   {post.title}
                 </h3>
                 <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
@@ -56,7 +56,7 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
               </div>
             </div>
             <div className="px-6 pb-6 pt-0">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0C3B36] group-hover:gap-2 transition-all">
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#3B1E2B] group-hover:gap-2 transition-all">
                 Read Article →
               </span>
             </div>

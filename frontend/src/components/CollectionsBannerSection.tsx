@@ -7,7 +7,7 @@ export default function CollectionsBannerSection({ onOpenCollections }: Collecti
     <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Left Image Column matching Live Screenshots 1 & 2 */}
-        <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-sm relative aspect-[4/3] bg-[#F4F3EE]">
+        <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-sm relative aspect-[4/3] bg-[#F8ECE2]">
           <img
             src="/images/handmade-beaded-bags-display.webp"
             alt="Handmade beaded bags collection display"
@@ -27,7 +27,7 @@ export default function CollectionsBannerSection({ onOpenCollections }: Collecti
           <div className="pt-2">
             <button
               onClick={onOpenCollections}
-              className="inline-flex items-center gap-2 bg-[#0C3B36] text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm hover:bg-[#092e2b] transition-all duration-200 shadow-md group cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#3B1E2B] text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm hover:bg-[#092e2b] transition-all duration-200 shadow-md group cursor-pointer"
             >
               <span>View all collections</span>
               <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -27,7 +27,7 @@ export default function CollectionGrid() {
                 {card.title}
               </h3>
               <div>
-                <span className="inline-flex items-center gap-2 bg-[#0C3B36] text-white text-xs font-bold px-4 py-2 rounded-full transition-all group-hover:bg-[#072623] group-hover:gap-3">
+                <span className="inline-flex items-center gap-2 bg-[#3B1E2B] text-white text-xs font-bold px-4 py-2 rounded-full transition-all group-hover:bg-[#2B141F] group-hover:gap-3">
                   <span>Shop now</span>
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />

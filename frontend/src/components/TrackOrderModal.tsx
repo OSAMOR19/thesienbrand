@@ -39,7 +39,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
 
         {/* Title */}
         <div className="space-y-2">
-          <span className="text-[11px] font-extrabold tracking-wider uppercase text-[#0C3B36]">
+          <span className="text-[11px] font-extrabold tracking-wider uppercase text-[#3B1E2B]">
             PARCELPANEL TRACKING
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 font-sans tracking-tight">
@@ -51,7 +51,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
         </div>
 
         {result ? (
-          <div className="bg-emerald-50 text-[#0C3B36] p-6 rounded-2xl space-y-3 border border-emerald-100">
+          <div className="bg-emerald-50 text-[#3B1E2B] p-6 rounded-2xl space-y-3 border border-emerald-100">
             <div className="flex items-center gap-2 font-extrabold text-sm">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
               <span>{result}</span>
@@ -61,7 +61,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
             </p>
             <button
               onClick={() => setResult(null)}
-              className="mt-2 text-xs font-bold underline text-[#0C3B36]"
+              className="mt-2 text-xs font-bold underline text-[#3B1E2B]"
             >
               Track another order
             </button>
@@ -98,7 +98,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
 
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-[#0C3B36] hover:bg-[#082825] text-white font-bold text-sm transition-colors shadow-md"
+              className="w-full py-3.5 px-4 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-sm transition-colors shadow-md"
             >
               Track Order Progress
             </button>

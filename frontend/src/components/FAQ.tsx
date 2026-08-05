@@ -29,7 +29,7 @@ export default function FAQ({ onOpenContact, onOpenFaq }: FAQProps) {
             <div className="space-y-3 pt-2">
               <button
                 onClick={onOpenContact || (() => { window.location.hash = 'contact' })}
-                className="block w-full py-3.5 rounded-xl bg-[#0C3B36] text-white font-bold text-xs sm:text-sm hover:bg-[#082925] transition-colors text-center shadow-xs cursor-pointer"
+                className="block w-full py-3.5 rounded-xl bg-[#3B1E2B] text-white font-bold text-xs sm:text-sm hover:bg-[#2B141F] transition-colors text-center shadow-xs cursor-pointer"
               >
                 Contact Us
               </button>
@@ -55,7 +55,7 @@ export default function FAQ({ onOpenContact, onOpenFaq }: FAQProps) {
                   <div key={i} className="py-4 first:pt-0 last:pb-0">
                     <button
                       onClick={() => toggle(i)}
-                      className="w-full text-left flex items-center justify-between font-bold text-sm sm:text-base text-gray-900 font-sans hover:text-[#0C3B36] transition-colors py-1"
+                      className="w-full text-left flex items-center justify-between font-bold text-sm sm:text-base text-gray-900 font-sans hover:text-[#3B1E2B] transition-colors py-1"
                     >
                       <span>{faq.q}</span>
                       <svg

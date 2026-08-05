@@ -61,7 +61,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   <button
                     key={term}
                     onClick={() => setQuery(term)}
-                    className="px-3.5 py-1.5 rounded-full bg-gray-100 text-xs font-medium text-gray-700 hover:bg-[#0C3B36] hover:text-white transition-colors"
+                    className="px-3.5 py-1.5 rounded-full bg-gray-100 text-xs font-medium text-gray-700 hover:bg-[#3B1E2B] hover:text-white transition-colors"
                   >
                     {term}
                   </button>
@@ -85,17 +85,17 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {filtered.map((p) => (
                   <div
                     key={p.id}
-                    className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#0C3B36]/30 hover:bg-[#0C3B36]/5 transition-all group"
+                    className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#3B1E2B]/30 hover:bg-[#3B1E2B]/5 transition-all group"
                   >
                     <img src={p.image} alt={p.name} className="w-16 h-16 object-cover rounded-lg bg-gray-100 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-semibold text-gray-900 truncate">{p.name}</h4>
                       <p className="text-xs text-gray-500">{p.collection}</p>
-                      <p className="text-xs font-bold text-[#0C3B36] mt-0.5">{formatPrice(p.priceUSD)}</p>
+                      <p className="text-xs font-bold text-[#3B1E2B] mt-0.5">{formatPrice(p.priceUSD)}</p>
                     </div>
                     <button
                       onClick={() => handleAddToCart(p)}
-                      className="px-3 py-1.5 bg-[#0C3B36] text-white text-xs rounded-full font-medium opacity-90 group-hover:opacity-100 transition-opacity"
+                      className="px-3 py-1.5 bg-[#3B1E2B] text-white text-xs rounded-full font-medium opacity-90 group-hover:opacity-100 transition-opacity"
                     >
                       Add
                     </button>

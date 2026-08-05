@@ -53,7 +53,7 @@ export default function PolicyModal({ policyType, onClose }: PolicyModalProps) {
         </button>
 
         <div className="space-y-2">
-          <span className="text-[11px] font-extrabold tracking-wider uppercase text-[#0C3B36]">
+          <span className="text-[11px] font-extrabold tracking-wider uppercase text-[#3B1E2B]">
             LEGAL & POLICIES
           </span>
           <h2 className="text-2xl font-extrabold text-gray-900 font-sans tracking-tight">
@@ -70,7 +70,7 @@ export default function PolicyModal({ policyType, onClose }: PolicyModalProps) {
 
         <button
           onClick={onClose}
-          className="w-full py-3.5 px-4 rounded-2xl bg-[#0C3B36] text-white font-bold text-sm hover:bg-[#082825] transition-colors"
+          className="w-full py-3.5 px-4 rounded-2xl bg-[#3B1E2B] text-white font-bold text-sm hover:bg-[#2B141F] transition-colors"
         >
           Close Policy Window
         </button>

@@ -81,7 +81,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome, onSele
       {/* Breadcrumb Navigation */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <button onClick={onBackToHome} className="hover:text-[#0C3B36] transition-colors">
+          <button onClick={onBackToHome} className="hover:text-[#3B1E2B] transition-colors">
             Home
           </button>
           <span>/</span>
@@ -108,7 +108,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome, onSele
               onClick={() => onSelectCategory(item.category)}
               className="group cursor-pointer space-y-3"
             >
-              <div className="relative aspect-[3/4] bg-[#F4F3EE] rounded-3xl overflow-hidden shadow-xs group-hover:shadow-md transition-shadow">
+              <div className="relative aspect-[3/4] bg-[#F8ECE2] rounded-3xl overflow-hidden shadow-xs group-hover:shadow-md transition-shadow">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -116,7 +116,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome, onSele
                   loading="lazy"
                 />
               </div>
-              <h3 className="font-extrabold text-gray-900 text-base tracking-tight font-sans group-hover:text-[#0C3B36] transition-colors">
+              <h3 className="font-extrabold text-gray-900 text-base tracking-tight font-sans group-hover:text-[#3B1E2B] transition-colors">
                 {item.name}
               </h3>
             </div>

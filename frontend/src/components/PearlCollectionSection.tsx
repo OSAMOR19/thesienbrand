@@ -15,7 +15,7 @@ export default function PearlCollectionSection() {
   const pearlProducts = products.filter((p) => pearlProductIds.includes(p.id))
 
   return (
-    <div className="bg-[#FAF9F6] border-t border-gray-100 py-4">
+    <div className="bg-[#FFF6F0] border-t border-gray-100 py-4">
       <ProductCarousel
         id="pearl-beaded-bags"
         title="Pearl Beaded Bags"

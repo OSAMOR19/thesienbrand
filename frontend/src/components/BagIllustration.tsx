@@ -26,7 +26,7 @@ const handles: Record<string, string> = {
   mini: 'M80,68 Q80,45 100,45 Q120,45 120,68',
 }
 
-export default function BagIllustration({ shape = 'tote', pattern = 'plain', swatch = '#0C3B36', className }: Props) {
+export default function BagIllustration({ shape = 'tote', pattern = 'plain', swatch = '#3B1E2B', className }: Props) {
   const safeShape = bodies[shape] ? shape : 'tote'
   const uid = `${safeShape}-${swatch.replace('#', '')}`
   const pid = `${pattern}-${uid}`
