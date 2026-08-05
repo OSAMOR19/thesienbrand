@@ -1,0 +1,15 @@
+{
+  "name": "loop-atelier-backend",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "functions:serve": "supabase functions serve",
+    "functions:deploy": "supabase functions deploy newsletter-subscribe"
+  },
+  "devDependencies": {
+    "supabase": "^1.219.2"
+  }
+}
