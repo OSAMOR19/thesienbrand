@@ -39,7 +39,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
           >
             Home
           </button>
-          <span className="text-gray-400">›</span>
+          <span className="text-gray-400 font-bold">/</span>
           <span className="text-gray-800 font-bold">Contact</span>
         </nav>
 

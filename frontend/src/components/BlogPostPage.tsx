@@ -73,7 +73,7 @@ const blogArticles: Record<string, { title: string; date: string; category: stri
 }
 
 
-export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPageProps) {
+export default function BlogPostPage({ postSlug, onBackToBlog, onBackToHome }: BlogPostPageProps & { onBackToHome?: () => void }) {
   const article = blogArticles[postSlug] || blogArticles['are-beaded-bags-good-for-evening-wear']
 
   return (
@@ -81,15 +81,23 @@ export default function BlogPostPage({ postSlug, onBackToBlog }: BlogPostPagePro
       {/* Breadcrumb */}
       <div className="flex items-center justify-between border-b border-gray-100 pb-4">
         <div className="flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <button onClick={onBackToBlog} className="hover:text-[#3B1E2B] transition-colors">
+          {onBackToHome && (
+            <>
+              <button onClick={onBackToHome} className="hover:text-[#3B1E2B] transition-colors cursor-pointer">
+                Home
+              </button>
+              <span className="text-gray-400 font-bold">/</span>
+            </>
+          )}
+          <button onClick={onBackToBlog} className="hover:text-[#3B1E2B] transition-colors cursor-pointer">
             Blog
           </button>
-          <span>/</span>
+          <span className="text-gray-400 font-bold">/</span>
           <span className="text-gray-900 font-bold truncate max-w-xs">{article.title}</span>
         </div>
         <button
           onClick={onBackToBlog}
-          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-gray-200 hover:border-gray-900 text-xs font-bold text-gray-800 transition-colors"
+          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-gray-200 hover:border-gray-900 text-xs font-bold text-gray-800 transition-colors cursor-pointer"
         >
           ← Back to Blog
         </button>

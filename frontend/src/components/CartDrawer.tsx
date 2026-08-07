@@ -1,7 +1,11 @@
 import { useCartStore } from '../store/cartStore'
 import { useCurrency } from '../store/useCurrency'
 
-export default function CartDrawer() {
+interface CartDrawerProps {
+  onOpenCollections?: () => void
+}
+
+export default function CartDrawer({ onOpenCollections }: CartDrawerProps = {}) {
   const { isOpen, close, lines, setQty, remove, subtotalUSD } = useCartStore()
   const { formatPrice } = useCurrency()
 
@@ -62,8 +66,11 @@ export default function CartDrawer() {
               </div>
               <p className="text-gray-500 text-sm font-medium">Your cart is currently empty.</p>
               <button
-                onClick={close}
-                className="px-6 py-2.5 rounded-full bg-[#3B1E2B] text-white text-xs font-bold hover:bg-[#2B141F] transition-colors"
+                onClick={() => {
+                  close()
+                  onOpenCollections?.()
+                }}
+                className="px-6 py-2.5 rounded-full bg-[#3B1E2B] text-white text-xs font-bold hover:bg-[#2B141F] transition-colors cursor-pointer"
               >
                 Explore Collections
               </button>

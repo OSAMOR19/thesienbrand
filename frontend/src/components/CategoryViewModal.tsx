@@ -5,9 +5,10 @@ import ProductCard from './ProductCard'
 interface CategoryViewModalProps {
   categoryName: string | null
   onClose: () => void
+  onSelectProduct?: (product: Product) => void
 }
 
-export default function CategoryViewModal({ categoryName, onClose }: CategoryViewModalProps) {
+export default function CategoryViewModal({ categoryName, onClose, onSelectProduct }: CategoryViewModalProps) {
   const [sortOption, setSortOption] = useState<'featured' | 'price-low' | 'price-high'>('featured')
 
   if (!categoryName) return null
@@ -97,7 +98,14 @@ export default function CategoryViewModal({ categoryName, onClose }: CategoryVie
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {sortedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelectProduct={(prod) => {
+                  onClose()
+                  onSelectProduct?.(prod)
+                }}
+              />
             ))}
           </div>
         )}

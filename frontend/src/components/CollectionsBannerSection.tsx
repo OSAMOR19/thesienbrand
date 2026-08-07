@@ -1,8 +1,9 @@
 interface CollectionsBannerSectionProps {
   onOpenCollections?: () => void
+  onSelectCategory?: (category: string) => void
 }
 
-export default function CollectionsBannerSection({ onOpenCollections }: CollectionsBannerSectionProps) {
+export default function CollectionsBannerSection({ onOpenCollections, onSelectCategory }: CollectionsBannerSectionProps) {
   return (
     <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -21,13 +22,37 @@ export default function CollectionsBannerSection({ onOpenCollections }: Collecti
             Beaded Bag Collections for Every Moment
           </h2>
           <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-            Discover our beaded bag lineup for real life. Start with <strong className="text-gray-900 underline font-semibold">Beaded Purse</strong> pieces—polished looks with secure zipper closures and neat pouch organization. Explore <strong className="text-gray-900 underline font-semibold">Beaded Handbag</strong> styles that pair with a versatile tote bag or refined shoulder bag. Choose <strong className="text-gray-900 underline font-semibold">Beaded Shoulder Bag</strong> designs with a comfy shoulder strap and convertible wear for errands. For nights out, <strong className="text-gray-900 underline font-semibold">Beaded Crossbody Bag</strong> options balance sleek satchel structure and clutch versatility. Elevate formal outfits with a <strong className="text-gray-900 underline font-semibold">Beaded Clutch</strong> in quilted textures and premium patent leather. Weekends call for the <strong className="text-gray-900 underline font-semibold">Beaded Bucket Bag</strong>—hands-free crossbody convenience with room for essentials.
+            Discover our beaded bag lineup for real life. Start with{' '}
+            <button onClick={() => onSelectCategory?.('Purse')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Purse
+            </button>{' '}
+            pieces—polished looks with secure zipper closures and neat pouch organization. Explore{' '}
+            <button onClick={() => onSelectCategory?.('Handbag')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Handbag
+            </button>{' '}
+            styles that pair with a versatile tote bag or refined shoulder bag. Choose{' '}
+            <button onClick={() => onSelectCategory?.('Shoulder Bag')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Shoulder Bag
+            </button>{' '}
+            designs with a comfy shoulder strap and convertible wear for errands. For nights out,{' '}
+            <button onClick={() => onSelectCategory?.('Crossbody')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Crossbody Bag
+            </button>{' '}
+            options balance sleek satchel structure and clutch versatility. Elevate formal outfits with a{' '}
+            <button onClick={() => onSelectCategory?.('Clutch')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Clutch
+            </button>{' '}
+            in quilted textures and premium patent leather. Weekends call for the{' '}
+            <button onClick={() => onSelectCategory?.('Bucket')} className="text-gray-900 underline font-semibold hover:text-[#3B1E2B] cursor-pointer">
+              Beaded Bucket Bag
+            </button>
+            —hands-free crossbody convenience with room for essentials.
           </p>
 
           <div className="pt-2">
             <button
               onClick={onOpenCollections}
-              className="inline-flex items-center gap-2 bg-[#3B1E2B] text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm hover:bg-[#092e2b] transition-all duration-200 shadow-md group cursor-pointer"
+              className="inline-flex items-center gap-2 bg-[#3B1E2B] text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm hover:bg-[#2B141F] transition-all duration-200 shadow-md group cursor-pointer"
             >
               <span>View all collections</span>
               <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,3 +65,4 @@ export default function CollectionsBannerSection({ onOpenCollections }: Collecti
     </section>
   )
 }
+

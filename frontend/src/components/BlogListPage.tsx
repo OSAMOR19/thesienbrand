@@ -16,7 +16,7 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
         >
           Home
         </button>
-        <span className="text-gray-400">›</span>
+        <span className="text-gray-400 font-bold">/</span>
         <span className="text-gray-800 font-bold">Beaded Bag Blog</span>
       </nav>
 

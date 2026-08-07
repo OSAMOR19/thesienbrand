@@ -186,7 +186,7 @@ export default function Footer({
                     <span>🏠</span> <span>33 N Gould St, Sheridan, WY 82801, USA</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span>📝</span> <span>Contact form: <a href="#contact" className="underline hover:text-white">Contact Us</a></span>
+                    <span>📝</span> <span>Contact form: <button onClick={onOpenContact} className="underline hover:text-white cursor-pointer">Contact Us</button></span>
                   </p>
                   <p className="flex items-center gap-2">
                     <span>✉️</span> <a href="mailto:info@beaded-bag.com" className="underline hover:text-white">info@beaded-bag.com</a>

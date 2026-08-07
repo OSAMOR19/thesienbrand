@@ -1,7 +1,12 @@
 import { useRef } from 'react'
 import { styleHighlights } from '../data/products'
 
-export default function DiscoverStyleSection() {
+interface DiscoverStyleSectionProps {
+  onOpenCollections?: () => void
+  onSelectCategory?: (category: string) => void
+}
+
+export default function DiscoverStyleSection({ onOpenCollections, onSelectCategory }: DiscoverStyleSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scroll = (direction: 'left' | 'right') => {
@@ -45,10 +50,16 @@ export default function DiscoverStyleSection() {
           className="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 snap-x snap-mandatory"
         >
           {styleHighlights.map((item) => (
-            <a
+            <div
               key={item.id}
-              href="#best-sellers"
-              className="flex-none w-[75vw] sm:w-[42vw] lg:w-[31%] group/card snap-start"
+              onClick={() => {
+                if (onSelectCategory) {
+                  onSelectCategory(item.title.split(' ')[0])
+                } else if (onOpenCollections) {
+                  onOpenCollections()
+                }
+              }}
+              className="flex-none w-[75vw] sm:w-[42vw] lg:w-[31%] group/card snap-start cursor-pointer text-left"
             >
               <div className="relative aspect-[3/4] bg-[#F8ECE2] rounded-3xl overflow-hidden mb-3 shadow-xs group-hover/card:shadow-md transition-shadow">
                 <img
@@ -58,10 +69,10 @@ export default function DiscoverStyleSection() {
                   loading="lazy"
                 />
               </div>
-              <h3 className="font-extrabold text-gray-900 text-sm sm:text-base tracking-tight font-sans">
+              <h3 className="font-extrabold text-gray-900 text-sm sm:text-base tracking-tight font-sans group-hover/card:text-[#3B1E2B] transition-colors">
                 {item.title}
               </h3>
-            </a>
+            </div>
           ))}
         </div>
 

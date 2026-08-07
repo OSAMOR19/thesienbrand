@@ -51,7 +51,7 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
           <button onClick={onBack} className="hover:text-[#3B1E2B] transition-colors cursor-pointer">
             Home
           </button>
-          <span className="text-gray-400">›</span>
+          <span className="text-gray-400 font-bold">/</span>
           <span className="text-gray-800 font-bold truncate max-w-xs">{product.name}</span>
         </nav>
         <button

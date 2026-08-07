@@ -1,7 +1,12 @@
 import ProductCarousel from './ProductCarousel'
-import { products } from '../data/products'
+import { products, type Product } from '../data/products'
 
-export default function PearlCollectionSection() {
+interface PearlCollectionSectionProps {
+  onOpenCollections?: () => void
+  onSelectProduct?: (product: Product) => void
+}
+
+export default function PearlCollectionSection({ onOpenCollections, onSelectProduct }: PearlCollectionSectionProps) {
   const pearlProductIds = [
     'baby-pink-beaded-bag',
     'white-pearl-beaded-bag',
@@ -20,8 +25,11 @@ export default function PearlCollectionSection() {
         id="pearl-beaded-bags"
         title="Pearl Beaded Bags"
         products={pearlProducts}
+        onViewAll={onOpenCollections}
+        onSelectProduct={onSelectProduct}
       />
     </div>
   )
 }
+
 

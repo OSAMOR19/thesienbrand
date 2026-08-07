@@ -50,6 +50,40 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  // Dynamic Document Title based on view and slash / page title
+  useEffect(() => {
+    const siteBrand = 'Loop Atelier'
+    let title = `${siteBrand} / Handcrafted Beaded Bags & Purses`
+
+    if (currentView === 'collections') {
+      title = `Collections / ${siteBrand}`
+    } else if (currentView === 'contact') {
+      title = `Contact Us / ${siteBrand}`
+    } else if (currentView === 'about') {
+      title = `About Us / ${siteBrand}`
+    } else if (currentView === 'faqs') {
+      title = `FAQs / ${siteBrand}`
+    } else if (currentView === 'blog-list') {
+      title = `Beaded Bag Blog / ${siteBrand}`
+    } else if (currentView === 'blog-post') {
+      const articleTitles: Record<string, string> = {
+        'are-beaded-bags-good-for-evening-wear': 'Are Beaded Bags Good for Evening Wear?',
+        'how-do-i-make-my-beaded-bag-stiff': 'How Do I Make My Beaded Bag Stiff?',
+        'how-many-beads-do-you-need-to-make-a-beaded-bag': 'How Many Beads Do You Need to Make a Beaded Bag?',
+        'where-to-store-handbags-in-a-house': 'Where to Store Handbags in a House?',
+        'is-it-okay-to-hang-handbags': 'Is it Okay to Hang Handbags?',
+        'how-to-store-beaded-handbags': 'How to Store Beaded Handbags?',
+      }
+      const postTitle = articleTitles[selectedPostSlug] || 'Blog Post'
+      title = `${postTitle} / ${siteBrand}`
+    } else if (currentView === 'product-detail' && selectedProduct) {
+      title = `${selectedProduct.name} / ${siteBrand}`
+    }
+
+    document.title = title
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [currentView, selectedProduct, selectedPostSlug])
+
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash
@@ -144,6 +178,7 @@ export default function App() {
           <BlogPostPage
             postSlug={selectedPostSlug}
             onBackToBlog={() => setCurrentView('blog-list')}
+            onBackToHome={() => setCurrentView('home')}
           />
         ) : (
           <>
@@ -163,7 +198,10 @@ export default function App() {
             <BrandStorySection onOpenCollections={() => setCurrentView('collections')} />
 
             {/* 4. Discover Your Perfect Beaded Bag */}
-            <DiscoverStyleSection />
+            <DiscoverStyleSection
+              onOpenCollections={() => setCurrentView('collections')}
+              onSelectCategory={(cat) => setActiveCategory(cat)}
+            />
 
             {/* 5. Beaded Handbag Product Carousel */}
             <ProductCarousel
@@ -181,23 +219,29 @@ export default function App() {
                 'clear-beaded-purse',
                 'yellow-beaded-handbag',
                 'light-blue-beaded-bag',
-              ].includes(p.id))}
+              ].includes(p.id) || p.collection === 'Handbags')}
             />
 
             {/* 6. The Beaded Bag Color Bar */}
-            <ColorBarSection />
+            <ColorBarSection onSelectCategory={(cat) => setActiveCategory(cat)} />
 
             {/* 7. Testimonials */}
             <Testimonials />
 
             {/* 8. Pearl Beaded Bags Dedicated Carousel */}
-            <PearlCollectionSection />
+            <PearlCollectionSection
+              onOpenCollections={() => setCurrentView('collections')}
+              onSelectProduct={handleSelectProduct}
+            />
 
             {/* 9. Quality, Durability & Style */}
             <ValueProps />
 
             {/* 10. Beaded Bag Collections for Every Moment */}
-            <CollectionsBannerSection onOpenCollections={() => setCurrentView('collections')} />
+            <CollectionsBannerSection
+              onOpenCollections={() => setCurrentView('collections')}
+              onSelectCategory={(cat) => setActiveCategory(cat)}
+            />
 
             {/* 11. FAQ Accordion */}
             <FAQ onOpenContact={handleOpenContact} onOpenFaq={handleOpenFaq} />
@@ -231,7 +275,7 @@ export default function App() {
       />
 
       {/* Drawers & Modals */}
-      <CartDrawer />
+      <CartDrawer onOpenCollections={() => setCurrentView('collections')} />
       <CurrencySelectorModal
         isOpen={isCurrencyModalOpen}
         onClose={() => setIsCurrencyModalOpen(false)}
@@ -239,10 +283,12 @@ export default function App() {
       <SearchModal
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
+        onSelectProduct={handleSelectProduct}
       />
       <CategoryViewModal
         categoryName={activeCategory}
         onClose={() => setActiveCategory(null)}
+        onSelectProduct={handleSelectProduct}
       />
       <AuthModal
         isOpen={isAuthModalOpen}

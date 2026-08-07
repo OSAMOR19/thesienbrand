@@ -170,7 +170,7 @@ export default function FaqPage({ onBackToHome, onOpenContact, onOpenTrackOrder 
         >
           Home
         </button>
-        <span className="text-gray-400">›</span>
+        <span className="text-gray-400 font-bold">/</span>
         <span className="text-gray-800 font-bold">FAQs</span>
       </nav>
 

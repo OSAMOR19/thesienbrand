@@ -6,9 +6,10 @@ import { useCartStore } from '../store/cartStore'
 interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
+  onSelectProduct?: (product: Product) => void
 }
 
-export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+export default function SearchModal({ isOpen, onClose, onSelectProduct }: SearchModalProps) {
   const [query, setQuery] = useState('')
   const { formatPrice } = useCurrency()
   const addToCart = useCartStore((s) => s.add)
@@ -28,6 +29,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const handleAddToCart = (p: Product) => {
     addToCart(p)
     onClose()
+  }
+
+  const handleProductClick = (p: Product) => {
+    onClose()
+    onSelectProduct?.(p)
   }
 
   return (
@@ -85,16 +91,20 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 {filtered.map((p) => (
                   <div
                     key={p.id}
-                    className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#3B1E2B]/30 hover:bg-[#3B1E2B]/5 transition-all group"
+                    className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#3B1E2B]/30 hover:bg-[#3B1E2B]/5 transition-all group cursor-pointer"
+                    onClick={() => handleProductClick(p)}
                   >
                     <img src={p.image} alt={p.name} className="w-16 h-16 object-cover rounded-lg bg-gray-100 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-gray-900 truncate">{p.name}</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 truncate group-hover:text-[#3B1E2B]">{p.name}</h4>
                       <p className="text-xs text-gray-500">{p.collection}</p>
                       <p className="text-xs font-bold text-[#3B1E2B] mt-0.5">{formatPrice(p.priceUSD)}</p>
                     </div>
                     <button
-                      onClick={() => handleAddToCart(p)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddToCart(p)
+                      }}
                       className="px-3 py-1.5 bg-[#3B1E2B] text-white text-xs rounded-full font-medium opacity-90 group-hover:opacity-100 transition-opacity"
                     >
                       Add
