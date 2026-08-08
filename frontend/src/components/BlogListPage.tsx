@@ -33,7 +33,7 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
           <article
             key={post.id}
             onClick={() => onSelectPost(post.id)}
-            className="group bg-[#F7F6F0] rounded-3xl overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer border border-gray-100"
+            className="group bg-white/95 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between cursor-pointer border border-[#3B1E2B]/10"
           >
             <div>
               <div className="relative aspect-[16/10] overflow-hidden bg-gray-200">
@@ -43,12 +43,6 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* The Sien Brand Watermark Overlay */}
-                <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 shadow-md">
-                  <span className="text-[10px] font-extrabold text-white uppercase tracking-wider font-sans">
-                    THE SIEN BRAND
-                  </span>
-                </div>
               </div>
               <div className="p-6 space-y-3">
                 <h2 className="font-extrabold text-lg text-gray-900 group-hover:text-[#3B1E2B] transition-colors line-clamp-2 font-sans leading-snug">

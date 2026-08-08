@@ -119,12 +119,6 @@ export default function BlogPostPage({ postSlug, onBackToBlog, onBackToHome }: B
       {/* Main Image */}
       <div className="relative rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
         <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
-        {/* The Sien Brand Watermark Overlay */}
-        <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 shadow-md">
-          <span className="text-xs font-extrabold text-white uppercase tracking-wider font-sans">
-            THE SIEN BRAND
-          </span>
-        </div>
       </div>
 
       {/* Article Content */}

@@ -42,12 +42,6 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* The Sien Brand Watermark Overlay replacing old BEADEDBAG watermark */}
-                <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 shadow-md">
-                  <span className="text-[10px] font-extrabold text-white uppercase tracking-wider font-sans">
-                    THE SIEN BRAND
-                  </span>
-                </div>
               </div>
               <div className="p-6 space-y-3">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">

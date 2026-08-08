@@ -34,8 +34,8 @@ export default function Footer({
 
   return (
     <footer className="font-sans">
-      {/* 1. Full-Width Perks Bar matching Live Screenshot 1 & 2 */}
-      <div className="bg-[#F8ECE2] py-12 border-t border-b border-[#3B1E2B]/10">
+      {/* 1. Full-Width Perks Bar in Deep Hard Peach Tone */}
+      <div className="bg-[#F4B493] py-12 border-t border-b border-[#3B1E2B]/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center sm:text-left">
             {/* Official Beaded Bag */}

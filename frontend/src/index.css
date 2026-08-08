@@ -12,7 +12,7 @@ html {
 
 body {
   margin: 0;
-  background-color: #FFF6F0; /* Soft Peach / Warm Nude */
+  background-color: #F8C3A8; /* Deep Hard Peach Tone */
   color: #2B141F; /* Deep Plum Dark */
   font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +20,7 @@ body {
 
 ::selection {
   background: #3B1E2B; /* Deep Plum / Dark Eggplant */
-  color: #FFF6F0;
+  color: #F8C3A8;
 }
 
 :focus-visible {
