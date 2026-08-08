@@ -6,11 +6,11 @@ interface PolicyModalProps {
 const policyContents: Record<string, { title: string; text: string }> = {
   privacy: {
     title: 'Privacy Policy',
-    text: 'Beaded Bag® respects your privacy and is committed to protecting your personal data. We collect customer data solely to process orders, improve product recommendations, and provide customer support. We do not sell your personal information to third parties.',
+    text: 'The Sien Brand® respects your privacy and is committed to protecting your personal data. We collect customer data solely to process orders, improve product recommendations, and provide customer support. We do not sell your personal information to third parties.',
   },
   terms: {
     title: 'Terms of Service',
-    text: 'By accessing or using Beaded Bag® services, you agree to be bound by these Terms of Service. All designs, images, and content are protected by copyright. Products purchased are for personal use.',
+    text: 'By accessing or using The Sien Brand® services, you agree to be bound by these Terms of Service. All designs, images, and content are protected by copyright. Products purchased are for personal use.',
   },
   payment: {
     title: 'Payment Policy',
@@ -31,7 +31,7 @@ export default function PolicyModal({ policyType, onClose }: PolicyModalProps) {
 
   const policy = policyContents[policyType] || {
     title: 'Policy Details',
-    text: 'Please contact info@beaded-bag.com for any questions regarding store policies.',
+    text: 'Please contact info@thesienbrand.com for any questions regarding store policies.',
   }
 
   return (
@@ -64,7 +64,7 @@ export default function PolicyModal({ policyType, onClose }: PolicyModalProps) {
         <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-xs sm:text-sm text-gray-700 leading-relaxed font-normal space-y-3 max-h-[60vh] overflow-y-auto">
           <p>{policy.text}</p>
           <p className="text-gray-500 text-xs pt-2">
-            Last updated: July 2026 | Beaded Bag® Official Legal Team
+            Last updated: July 2026 | The Sien Brand® Official Legal Team
           </p>
         </div>
 

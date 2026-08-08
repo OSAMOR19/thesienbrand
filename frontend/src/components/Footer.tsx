@@ -46,7 +46,7 @@ export default function Footer({
                 </svg>
               </div>
               <div>
-                <h4 className="font-extrabold text-base text-gray-900 font-sans tracking-tight">Official Beaded Bag®</h4>
+                <h4 className="font-extrabold text-base text-gray-900 font-sans tracking-tight">Official The Sien Brand®</h4>
                 <p className="text-xs text-gray-600 mt-1 font-normal">Original. Timeless. Detailed.</p>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function Footer({
                     <span>📝</span> <span>Contact form: <button onClick={onOpenContact} className="underline hover:text-white cursor-pointer">Contact Us</button></span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <span>✉️</span> <a href="mailto:info@beaded-bag.com" className="underline hover:text-white">info@beaded-bag.com</a>
+                    <span>✉️</span> <a href="mailto:info@thesienbrand.com" className="underline hover:text-white">info@thesienbrand.com</a>
                   </p>
                   <p className="flex items-center gap-2">
                     <span>🕒</span> <span>9:00am - 6:00pm, Mon to Sat</span>
@@ -215,7 +215,7 @@ export default function Footer({
 
             {/* Copyright */}
             <p className="text-center sm:text-right">
-              © 2026 Beaded Bag®.
+              © 2026 The Sien Brand®.
             </p>
           </div>
         </div>

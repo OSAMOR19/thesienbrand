@@ -34,7 +34,7 @@ const blogArticles: Record<string, { title: string; date: string; category: stri
     content: [
       'The number of beads required to craft a handbag depends on the bead size, bag dimension, and weaving technique.',
       'For a standard medium-sized handbag using 8mm acrylic beads, an artisan typically needs between 800 to 1,500 individual beads. Smaller micro-bead clutches can require up to 4,000 beads.',
-      'Every Beaded Bag® piece is meticulously hand-strung by master artisans, spending up to 24 hours per handbag.',
+      'Every The Sien Brand® piece is meticulously hand-strung by master artisans, spending up to 24 hours per handbag.',
     ],
   },
   'where-to-store-handbags-in-a-house': {
@@ -112,17 +112,19 @@ export default function BlogPostPage({ postSlug, onBackToBlog, onBackToHome }: B
           {article.title}
         </h1>
         <p className="text-xs text-gray-500 font-medium">
-          Published on {article.date} • By Beaded Bag® Editorial Team
+          Published on {article.date} • By The Sien Brand® Editorial Team
         </p>
       </div>
 
       {/* Main Image */}
-      <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
-        <img
-          src={article.image}
-          alt={article.title}
-          className="w-full h-full object-cover"
-        />
+      <div className="relative rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
+        <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
+        {/* The Sien Brand Watermark Overlay */}
+        <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20 shadow-md">
+          <span className="text-xs font-extrabold text-white uppercase tracking-wider font-sans">
+            THE SIEN BRAND
+          </span>
+        </div>
       </div>
 
       {/* Article Content */}

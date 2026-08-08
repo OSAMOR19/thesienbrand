@@ -28,7 +28,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
           OUR ARTISAN STORY
         </span>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-gray-900 tracking-tight font-sans">
-          About BEADED BAG®
+          About The Sien Brand®
         </h1>
         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
           Crafting handmade beaded purses, shoulder bags, and luxury clutches designed to make every outfit shine.
@@ -39,7 +39,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
       <div className="rounded-3xl overflow-hidden shadow-sm aspect-[16/9] bg-[#F8ECE2]">
         <img
           src="/images/beaded-bag-collection-multicolor-display.webp"
-          alt="Beaded Bag Brand Story Showcase"
+          alt="The Sien Brand Showcase"
           className="w-full h-full object-cover"
         />
       </div>
@@ -50,7 +50,7 @@ export default function AboutUsPage({ onBackToHome }: AboutUsPageProps) {
           Meticulous Craftsmanship, Modern Elegance
         </h2>
         <p>
-          Founded with a passion for traditional beadweaving and contemporary fashion, <strong>BEADED BAG®</strong> creates statement accessories that stand out. Every handbag in our collection is hand-strung by master artisans using premium acrylic, wooden, metallic, and pearl beads.
+          Founded with a passion for traditional beadweaving and contemporary fashion, <strong>The Sien Brand®</strong> creates statement accessories that stand out. Every handbag in our collection is hand-strung by master artisans using premium acrylic, wooden, metallic, and pearl beads.
         </p>
         <p>
           We believe accessories should be as durable as they are beautiful. That is why every piece undergoes strict quality control checks to ensure reinforced stitching, sturdy handles, and smooth finishes.

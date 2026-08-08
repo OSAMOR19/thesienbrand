@@ -46,7 +46,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
             Track Your Order
           </h2>
           <p className="text-xs text-gray-600 font-normal leading-relaxed">
-            Enter your order number and email or phone number to check the real-time shipping status of your Beaded Bag® package.
+            Enter your order number and email or phone number to check the real-time shipping status of your The Sien Brand® package.
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
               <span>{result}</span>
             </div>
             <p className="text-xs text-gray-600">
-              Tracking Number: <strong className="text-gray-900">BB-94827103-NG</strong> (FedEx Express)
+              Tracking Number: <strong className="text-gray-900">TSB-94827103-NG</strong> (FedEx Express)
             </p>
             <button
               onClick={() => setResult(null)}
@@ -75,10 +75,10 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
               <input
                 type="text"
                 required
-                placeholder="e.g. BB-10492"
+                placeholder="e.g. #9821"
                 value={orderNumber}
                 onChange={(e) => setOrderNumber(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 text-sm outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gray-900 text-xs font-medium outline-none transition-colors"
               />
             </div>
 
@@ -89,21 +89,27 @@ export default function TrackOrderModal({ isOpen, onClose }: TrackOrderModalProp
               <input
                 type="text"
                 required
-                placeholder="e.g. info@beaded-bag.com"
+                placeholder="e.g. email@example.com"
                 value={emailOrPhone}
                 onChange={(e) => setEmailOrPhone(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-gray-900 text-sm outline-none transition-colors"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-gray-900 text-xs font-medium outline-none transition-colors"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-2xl bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-bold text-sm transition-colors shadow-md"
+              className="w-full py-3.5 bg-[#3B1E2B] hover:bg-[#2B141F] text-white font-extrabold rounded-xl text-xs uppercase tracking-wider transition-colors shadow-md cursor-pointer"
             >
-              Track Order Progress
+              Track Order Status
             </button>
           </form>
         )}
+
+        <div className="pt-2 text-center border-t border-gray-100">
+          <p className="text-[11px] text-gray-500">
+            Need help? Contact support at <a href="mailto:info@thesienbrand.com" className="underline text-gray-700 font-medium">info@thesienbrand.com</a>
+          </p>
+        </div>
       </div>
     </div>
   )

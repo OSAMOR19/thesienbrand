@@ -17,17 +17,17 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
           Home
         </button>
         <span className="text-gray-400 font-bold">/</span>
-        <span className="text-gray-800 font-bold">Beaded Bag Blog</span>
+        <span className="text-gray-800 font-bold">The Sien Brand Journal</span>
       </nav>
 
-      {/* Main Title matching Live Site Screenshot 3 */}
+      {/* Main Title */}
       <div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight font-sans">
-          Beaded Bag Blog
+          The Sien Brand Journal
         </h1>
       </div>
 
-      {/* Blog Cards Grid matching Live Site Screenshots 2 & 3 */}
+      {/* Blog Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
         {blogPosts.map((post) => (
           <article
@@ -43,6 +43,12 @@ export default function BlogListPage({ onSelectPost, onBackToHome }: BlogListPag
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
+                {/* The Sien Brand Watermark Overlay */}
+                <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 shadow-md">
+                  <span className="text-[10px] font-extrabold text-white uppercase tracking-wider font-sans">
+                    THE SIEN BRAND
+                  </span>
+                </div>
               </div>
               <div className="p-6 space-y-3">
                 <h2 className="font-extrabold text-lg text-gray-900 group-hover:text-[#3B1E2B] transition-colors line-clamp-2 font-sans leading-snug">

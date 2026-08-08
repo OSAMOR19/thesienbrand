@@ -18,7 +18,7 @@ export default function AuthModal({ isOpen, onClose, onAdminLogin }: AuthModalPr
     e.preventDefault()
     if (email) {
       const lower = email.toLowerCase()
-      if (lower.includes('admin') || lower === 'admin@thesienbrand.com' || lower === 'admin@beaded-bag.com') {
+      if (lower.includes('admin') || lower === 'admin@thesienbrand.com') {
         setIsAdminDetected(true)
         onAdminLogin?.(email)
       } else {
@@ -52,11 +52,13 @@ export default function AuthModal({ isOpen, onClose, onAdminLogin }: AuthModalPr
           ✕
         </button>
 
-        {/* Logo matching account.beaded-bag.com screenshot */}
+        {/* Logo */}
         <div className="text-center pt-2">
-          <h1 className="font-extrabold text-2xl tracking-tighter text-gray-900 font-sans">
-            BEADED<span className="font-light">BAG</span><span className="text-xs align-top">®</span>
-          </h1>
+          <img
+            src="/images/the-sien-brand-logo.png"
+            alt="The Sien Brand"
+            className="h-10 sm:h-12 w-auto mx-auto object-contain"
+          />
         </div>
 
         {/* Header */}

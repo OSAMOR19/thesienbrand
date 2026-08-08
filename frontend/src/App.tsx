@@ -65,7 +65,7 @@ export default function App() {
 
   // Dynamic Document Title based on view and slash / page title
   useEffect(() => {
-    const siteBrand = 'Loop Atelier'
+    const siteBrand = 'The Sien Brand'
     let title = `${siteBrand} / Handcrafted Beaded Bags & Purses`
 
     if (currentView === 'collections') {
@@ -77,7 +77,7 @@ export default function App() {
     } else if (currentView === 'faqs') {
       title = `FAQs / ${siteBrand}`
     } else if (currentView === 'blog-list') {
-      title = `Beaded Bag Blog / ${siteBrand}`
+      title = `The Sien Brand Journal / ${siteBrand}`
     } else if (currentView === 'blog-post') {
       const articleTitles: Record<string, string> = {
         'are-beaded-bags-good-for-evening-wear': 'Are Beaded Bags Good for Evening Wear?',

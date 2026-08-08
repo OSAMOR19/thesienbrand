@@ -52,7 +52,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
             How Can we Assist You?
           </h2>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed font-normal max-w-3xl">
-            At <strong className="text-gray-900 font-semibold">Beaded Bag®</strong>, every question, suggestion, and comment matters. Your experience is our priority, and we're here to listen and help. Whether you're asking about a product, making a special request, or sharing feedback, our team is ready with clear, timely answers.
+            At <strong className="text-gray-900 font-semibold">The Sien Brand®</strong>, every question, suggestion, and comment matters. Your experience is our priority, and we're here to listen and help. Whether you're asking about a product, making a special request, or sharing feedback, our team is ready with clear, timely answers.
           </p>
         </div>
 
@@ -218,7 +218,7 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
             Contact Information
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed font-normal">
-            At <strong className="text-gray-900 font-semibold">Beaded Bag®</strong>, we're committed to making your experience smooth and enjoyable. If you have questions, suggestions, or comments, our team is here to help. We prioritize email so we can deliver detailed, thoughtful responses and keep a clear record of your requests—ensuring nothing is missed and you receive the personalized attention you deserve.
+            At <strong className="text-gray-900 font-semibold">The Sien Brand®</strong>, we're committed to making your experience smooth and enjoyable. If you have questions, suggestions, or comments, our team is here to help. We prioritize email so we can deliver detailed, thoughtful responses and keep a clear record of your requests—ensuring nothing is missed and you receive the personalized attention you deserve.
           </p>
 
           <div className="space-y-4 pt-2 text-xs sm:text-sm font-medium text-gray-700">
@@ -228,8 +228,8 @@ export default function ContactPage({ onBackToHome }: ContactPageProps) {
             </div>
             <div className="flex items-center gap-3">
               <span className="text-base">✉️</span>
-              <a href="mailto:info@beaded-bag.com" className="hover:text-[#3B1E2B] underline">
-                info@beaded-bag.com
+              <a href="mailto:info@thesienbrand.com" className="hover:text-[#3B1E2B] underline">
+                info@thesienbrand.com
               </a>
             </div>
             <div className="flex items-center gap-3">

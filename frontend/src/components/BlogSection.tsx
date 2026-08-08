@@ -13,7 +13,7 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
     <section className="py-12 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl sm:text-4xl font-extrabold text-gray-900 tracking-tight font-sans">
-          Beaded Bag Blog
+          The Sien Brand Journal
         </h2>
         <button
           onClick={onSeeAll || (() => onSelectPost?.('how-many-beads-do-you-need-to-make-a-beaded-bag'))}
@@ -42,6 +42,12 @@ export default function BlogSection({ onSelectPost, onSeeAll }: BlogSectionProps
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
+                {/* The Sien Brand Watermark Overlay replacing old BEADEDBAG watermark */}
+                <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/20 shadow-md">
+                  <span className="text-[10px] font-extrabold text-white uppercase tracking-wider font-sans">
+                    THE SIEN BRAND
+                  </span>
+                </div>
               </div>
               <div className="p-6 space-y-3">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
