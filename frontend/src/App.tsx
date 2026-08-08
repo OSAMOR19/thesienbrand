@@ -29,6 +29,7 @@ import BlogListPage from './components/BlogListPage'
 import BlogPostPage from './components/BlogPostPage'
 import FaqPage from './components/FaqPage'
 import ProductDetailPage from './components/ProductDetailPage'
+import AdminDashboardModal from './components/AdminDashboardModal'
 import { products, type Product } from './data/products'
 
 export default function App() {
@@ -42,12 +43,24 @@ export default function App() {
   const [activePolicy, setActivePolicy] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
-  const bestSellers = products.filter((p) => p.isBestSeller)
+  // Admin & Products State
+  const [customProducts, setCustomProducts] = useState<Product[]>(products)
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
+  const [adminEmail, setAdminEmail] = useState('')
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false)
+
+  const bestSellers = customProducts.filter((p) => p.isBestSeller)
 
   const handleSelectProduct = (prod: Product) => {
     setSelectedProduct(prod)
     setCurrentView('product-detail')
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleAdminLogin = (email: string) => {
+    setIsAdminLoggedIn(true)
+    setAdminEmail(email)
+    setIsAdminModalOpen(true)
   }
 
   // Dynamic Document Title based on view and slash / page title
@@ -125,12 +138,31 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#FFF6F0] text-[#111827] font-sans antialiased selection:bg-[#3B1E2B] selection:text-white">
-      {/* Top Announcement Bar */}
-      <AnnouncementBar
-        onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}
-        onOpenContact={handleOpenContact}
-        onOpenFaq={handleOpenFaq}
-      />
+      {/* Top Edge Admin Access Bar when Admin is Logged In */}
+      {isAdminLoggedIn && (
+        <div className="bg-[#2B141F] text-white px-4 sm:px-8 py-2.5 flex items-center justify-between text-xs font-bold sticky top-0 z-50 shadow-md border-b border-amber-400/40">
+          <div className="flex items-center gap-2">
+            <span className="bg-amber-400 text-gray-900 font-extrabold px-2.5 py-0.5 rounded-full text-[10px] uppercase tracking-wider">
+              ⚡ ADMIN LOGGED IN
+            </span>
+            <span className="hidden sm:inline text-white/90">Welcome, {adminEmail || 'admin@thesienbrand.com'}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsAdminModalOpen(true)}
+              className="bg-amber-400 hover:bg-amber-300 text-gray-900 px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer shadow-sm hover:scale-105"
+            >
+              Open Admin Dashboard &amp; Media Upload
+            </button>
+            <button
+              onClick={() => setIsAdminLoggedIn(false)}
+              className="text-white/70 hover:text-white underline cursor-pointer text-xs"
+            >
+              Logout Admin
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Navigation Header */}
       <Header
@@ -210,7 +242,7 @@ export default function App() {
               showTabs={true}
               onViewAll={() => setCurrentView('collections')}
               onSelectProduct={handleSelectProduct}
-              products={products.filter((p) => [
+              products={customProducts.filter((p) => [
                 'green-beaded-purse',
                 'chain-strap-beaded-handbag',
                 'pink-beaded-purse',
@@ -293,6 +325,7 @@ export default function App() {
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
+        onAdminLogin={handleAdminLogin}
       />
       <TrackOrderModal
         isOpen={isTrackOrderModalOpen}
@@ -301,6 +334,14 @@ export default function App() {
       <PolicyModal
         policyType={activePolicy}
         onClose={() => setActivePolicy(null)}
+      />
+
+      {/* Admin Dashboard Modal */}
+      <AdminDashboardModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        productsList={customProducts}
+        onUpdateProducts={(updated) => setCustomProducts(updated)}
       />
     </div>
   )

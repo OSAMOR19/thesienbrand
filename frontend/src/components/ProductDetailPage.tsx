@@ -13,17 +13,18 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
   const add = useCartStore((s) => s.add)
   const { formatPrice } = useCurrency()
 
-  // Gallery image setup
-  const gallery = product.galleryImages && product.galleryImages.length > 0
-    ? product.galleryImages
-    : [
-        product.image,
-        product.hoverImage || product.image,
-        '/images/handmade-beaded-bags-display.webp',
-        '/images/beaded-bag-lifestyle-portrait-elegant-woman-white-shirt.webp',
-        '/images/beaded-bag-lifestyle-portrait-smiling-woman-black-blazer.webp',
-        '/images/beaded-bag-lifestyle-portrait-casual-woman-tee-jeans.webp',
-      ]
+  // Gallery media setup (video + images)
+  const mediaList = [
+    ...(product.video ? [{ type: 'video' as const, src: product.video }] : []),
+    ...(product.galleryImages && product.galleryImages.length > 0
+      ? product.galleryImages.map((img) => ({ type: 'image' as const, src: img }))
+      : [
+          { type: 'image' as const, src: product.image },
+          { type: 'image' as const, src: product.hoverImage || product.image },
+          { type: 'image' as const, src: '/images/handmade-beaded-bags-display.webp' },
+          { type: 'image' as const, src: '/images/beaded-bag-lifestyle-portrait-elegant-woman-white-shirt.webp' },
+        ]),
+  ]
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [openAccordion, setOpenAccordion] = useState<'desc' | 'shipping' | 'payment' | null>('desc')
@@ -35,6 +36,8 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
   const handleAddToCart = () => {
     add(product)
   }
+
+  const activeMedia = mediaList[selectedImageIndex] || mediaList[0]
 
   const reviewsList = [
     { name: 'Grace', title: 'Exactly what I wanted', rating: 5, date: 'July 24, 2026' },
@@ -62,18 +65,18 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
         </button>
       </div>
 
-      {/* Main Product Layout matching Screenshots 1, 2, 3 */}
+      {/* Main Product Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-        {/* Left Column: Image Viewer & Gallery Thumbnails */}
+        {/* Left Column: Media Viewer & Gallery Thumbnails */}
         <div className="lg:col-span-6 space-y-4 sticky top-24">
-          {/* Featured Main Image with Left/Right Arrows & Dash Indicators */}
-          <div className="relative aspect-[4/5] bg-[#F8ECE2] rounded-3xl overflow-hidden shadow-2xs border border-[#F0DFD1] flex items-center justify-center p-6 group">
+          {/* Featured Main Media Viewer (Frameless Pure Media) */}
+          <div className="relative aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center group">
             {/* Left Navigation Arrow */}
-            {gallery.length > 1 && (
+            {mediaList.length > 1 && (
               <button
-                onClick={() => setSelectedImageIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
+                onClick={() => setSelectedImageIndex((prev) => (prev > 0 ? prev - 1 : mediaList.length - 1))}
                 className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-sm flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-                aria-label="Previous Image"
+                aria-label="Previous Media"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -82,11 +85,11 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
             )}
 
             {/* Right Navigation Arrow */}
-            {gallery.length > 1 && (
+            {mediaList.length > 1 && (
               <button
-                onClick={() => setSelectedImageIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
+                onClick={() => setSelectedImageIndex((prev) => (prev < mediaList.length - 1 ? prev + 1 : 0))}
                 className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-sm flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
-                aria-label="Next Image"
+                aria-label="Next Media"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -94,22 +97,34 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
               </button>
             )}
 
-            {/* Main Featured Image */}
-            <img
-              src={gallery[selectedImageIndex] || product.image}
-              alt={product.name}
-              className="w-full h-full object-contain transition-all duration-300"
-            />
+            {/* Main Featured Media Item (Video or Image) */}
+            {activeMedia.type === 'video' ? (
+              <video
+                src={activeMedia.src}
+                controls
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover transition-all duration-300"
+              />
+            ) : (
+              <img
+                src={activeMedia.src}
+                alt={product.name}
+                className="w-full h-full object-cover transition-all duration-300"
+              />
+            )}
 
-            {/* Pagination Dash Indicators matching Screenshot */}
-            {gallery.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
-                {gallery.map((_, idx: number) => (
+            {/* Pagination Dash Indicators */}
+            {mediaList.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10 bg-black/30 backdrop-blur-md px-3 py-1 rounded-full">
+                {mediaList.map((_, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
-                      selectedImageIndex === idx ? 'w-7 bg-gray-900' : 'w-4 bg-gray-400/50 hover:bg-gray-600'
+                      selectedImageIndex === idx ? 'w-6 bg-white' : 'w-3 bg-white/50 hover:bg-white/80'
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
                   />
@@ -118,17 +133,26 @@ export default function ProductDetailPage({ product, onBack, onOpenContact }: Pr
             )}
           </div>
 
-          {/* Gallery Thumbnails Row matching Screenshot */}
+          {/* Gallery Thumbnails Row */}
           <div className="relative flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
-            {gallery.map((img: string, idx: number) => (
+            {mediaList.map((item, idx: number) => (
               <button
                 key={idx}
                 onClick={() => setSelectedImageIndex(idx)}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 bg-[#F8ECE2] p-1 transition-all cursor-pointer ${
-                  selectedImageIndex === idx ? 'border-gray-900 scale-95 shadow-xs' : 'border-transparent opacity-75 hover:opacity-100'
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 flex-shrink-0 bg-gray-100 transition-all cursor-pointer ${
+                  selectedImageIndex === idx ? 'border-[#3B1E2B] scale-95 shadow-md' : 'border-transparent opacity-80 hover:opacity-100'
                 }`}
               >
-                <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-contain" />
+                {item.type === 'video' ? (
+                  <div className="w-full h-full bg-black relative flex items-center justify-center">
+                    <video src={item.src} muted className="w-full h-full object-cover opacity-80" />
+                    <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs bg-black/40">
+                      ▶ VIDEO
+                    </span>
+                  </div>
+                ) : (
+                  <img src={item.src} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                )}
               </button>
             ))}
           </div>

@@ -108,7 +108,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome, onSele
               onClick={() => onSelectCategory(item.category)}
               className="group cursor-pointer space-y-3"
             >
-              <div className="relative aspect-[3/4] bg-[#F8ECE2] rounded-3xl overflow-hidden shadow-xs group-hover:shadow-md transition-shadow">
+              <div className="relative aspect-[3/4] bg-gray-100 rounded-2xl overflow-hidden shadow-none group-hover:scale-[1.02] transition-transform duration-300">
                 <img
                   src={item.image}
                   alt={item.name}

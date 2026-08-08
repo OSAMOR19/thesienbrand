@@ -37,9 +37,9 @@ export default function ColorBarSection({ onSelectCategory }: ColorBarSectionPro
           <button
             key={card.name}
             onClick={() => onSelectCategory?.(card.category)}
-            className="group flex flex-col items-start bg-[#F8ECE2] rounded-3xl p-3 sm:p-4 hover:shadow-md transition-all duration-300 text-left w-full cursor-pointer"
+            className="group flex flex-col items-start bg-transparent transition-all duration-300 text-left w-full cursor-pointer"
           >
-            <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-3 bg-white">
+            <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-2.5 bg-gray-100 group-hover:scale-[1.02] transition-transform duration-300">
               <img
                 src={card.image}
                 alt={card.name}

@@ -2,10 +2,11 @@ export interface Product {
   id: string
   name: string
   priceUSD: number // Base USD price
-  collection: 'Best Sellers' | 'Handbags' | 'Shoulder Bags' | 'Evening' | 'Clutches' | 'Bucket Bags'
+  collection: 'Best Sellers' | 'Handbags' | 'Shoulder Bags' | 'Evening' | 'Clutches' | 'Bucket Bags' | string
   color: string
   material: string
   image: string
+  video?: string
   hoverImage?: string
   galleryImages?: string[]
   isBestSeller?: boolean
@@ -93,6 +94,7 @@ export const products: Product[] = [
     color: 'Black',
     material: 'Glossy Acrylic Beads',
     image: '/images/black-beaded-purse-1.png',
+    video: '/videos/black-beaded-purse.mp4',
     hoverImage: '/images/black-beaded-purse-2.png',
     galleryImages: [
       '/images/black-beaded-purse-1.png',

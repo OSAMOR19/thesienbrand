@@ -15,37 +15,48 @@ export default function ProductCard({ product, onSelectProduct }: ProductCardPro
 
   return (
     <div className="group flex flex-col items-center w-full">
-      {/* Product Image Container */}
+      {/* Product Image / Video Container - Frameless Pure Media */}
       <div
         onClick={() => onSelectProduct?.(product)}
-        className="relative w-full aspect-[4/5] bg-[#F8ECE2] rounded-3xl overflow-hidden mb-4 flex items-center justify-center p-6 transition-all duration-300 group-hover:shadow-lg cursor-pointer border border-[#F0DFD1]"
+        className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-3 cursor-pointer group-hover:scale-[1.02] transition-transform duration-300 bg-gray-100"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <img
-          src={isHovered && product.hoverImage ? product.hoverImage : product.image}
-          alt={product.name}
-          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
+        {product.video ? (
+          <video
+            src={product.video}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <img
+            src={isHovered && product.hoverImage ? product.hoverImage : product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+        )}
       </div>
 
       {/* Product Information */}
-      <div className="text-center w-full px-2">
+      <div className="text-center w-full px-1 space-y-1">
         <h3
           onClick={() => onSelectProduct?.(product)}
-          className="font-extrabold text-gray-900 text-sm sm:text-base tracking-tight mb-1 font-sans cursor-pointer hover:text-[#3B1E2B] transition-colors"
+          className="font-extrabold text-gray-900 text-sm sm:text-base tracking-tight font-sans cursor-pointer hover:text-[#3B1E2B] transition-colors line-clamp-1"
         >
           {product.name}
         </h3>
-        <p className="text-xs sm:text-sm font-semibold text-gray-700 mb-3">
+        <p className="text-xs sm:text-sm font-semibold text-gray-700 pb-1">
           {formatPrice(product.priceUSD)}
         </p>
 
         {/* Add to Cart Button */}
         <button
           onClick={() => add(product)}
-          className="w-full py-2.5 px-4 rounded-full border border-[#D9C4B7] hover:border-[#3B1E2B] hover:bg-[#3B1E2B] hover:text-white text-gray-900 text-xs sm:text-sm font-bold transition-all duration-200 shadow-2xs active:scale-95 cursor-pointer bg-white"
+          className="w-full py-2.5 px-4 rounded-full border border-gray-300 hover:border-[#3B1E2B] hover:bg-[#3B1E2B] hover:text-white text-gray-900 text-xs sm:text-sm font-bold transition-all duration-200 shadow-2xs active:scale-95 cursor-pointer bg-white"
         >
           Add to cart
         </button>
