@@ -224,13 +224,14 @@ export default function Header({
             </svg>
           </button>
 
-          {/* Account Button */}
+          {/* Account Button (Visible on ALL devices including mobile) */}
           <button
             onClick={onOpenAuth}
-            className="p-2 text-gray-700 hover:text-[#3B1E2B] hover:bg-gray-100 rounded-full transition-colors hidden sm:block"
-            aria-label="Account"
+            className="p-2 text-gray-700 hover:text-[#3B1E2B] hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+            aria-label="Account / Sign In"
+            title="Sign In / My Account"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
           </button>
@@ -238,7 +239,7 @@ export default function Header({
           {/* Cart Bag Icon with Count Badge */}
           <button
             onClick={openCart}
-            className="relative p-2 text-gray-800 hover:text-[#3B1E2B] transition-colors"
+            className="relative p-2 text-gray-800 hover:text-[#3B1E2B] transition-colors cursor-pointer"
             aria-label="View Cart"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,13 +254,24 @@ export default function Header({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-gray-100 bg-white px-5 py-4 space-y-3 font-semibold text-sm animate-fade-in">
+        <div className="lg:hidden border-t border-gray-100 bg-white px-5 py-4 space-y-4 font-semibold text-sm animate-fade-in shadow-lg">
+          {/* Direct Mobile Sign In Button */}
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false)
+              onOpenAuth?.()
+            }}
+            className="w-full py-3 px-4 rounded-xl bg-[#3B1E2B] text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
+          >
+            <span>👤 Sign In / My Account</span>
+          </button>
+
           <button
             onClick={() => {
               setMobileMenuOpen(false)
               onOpenCollections?.()
             }}
-            className="block py-2 text-gray-800 hover:text-[#3B1E2B] font-bold uppercase text-left w-full cursor-pointer"
+            className="block py-2 text-gray-800 hover:text-[#3B1E2B] font-bold uppercase text-left w-full cursor-pointer border-t border-gray-100 pt-3"
           >
             ALL BEADED BAGS
           </button>
@@ -270,7 +282,7 @@ export default function Header({
                 <button
                   key={item.name}
                   onClick={() => handleCategoryClick(item.category)}
-                  className="text-left text-gray-700 py-1 hover:text-[#3B1E2B]"
+                  className="text-left text-gray-700 py-1 hover:text-[#3B1E2B] font-semibold"
                 >
                   {item.name}
                 </button>
