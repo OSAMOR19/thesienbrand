@@ -441,21 +441,21 @@ export default function AdminDashboardPage({
       {/* RIGHT MAIN PANEL WORKSPACE */}
       <div className="flex-1 flex flex-col min-w-0 bg-[#F4F6F9]">
         {/* TOP NAVBAR (Matching Reference Bar) */}
-        <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between flex-shrink-0 shadow-2xs">
+        <header className="bg-white border-b border-gray-200 px-3.5 sm:px-6 py-3 flex items-center justify-between flex-shrink-0 shadow-2xs w-full">
           {/* Search Box */}
-          <div className="relative w-64 sm:w-80">
+          <div className="relative w-48 sm:w-80">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-xs text-gray-800 outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
+              className="w-full pl-8 sm:pl-9 pr-3 sm:pr-4 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-xs text-gray-800 outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
             />
           </div>
 
           {/* Right Admin Controls */}
-          <div className="flex items-center gap-4 text-xs font-semibold">
+          <div className="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
             <div className="hidden sm:flex items-center gap-2 text-gray-600">
               <span className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
                 {adminEmail ? adminEmail[0].toUpperCase() : 'A'}
@@ -466,14 +466,14 @@ export default function AdminDashboardPage({
 
             <button
               onClick={onLogoutAdmin}
-              className="px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors cursor-pointer border border-gray-200"
+              className="px-2.5 sm:px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors cursor-pointer border border-gray-200 text-[11px] sm:text-xs"
             >
               Logout
             </button>
 
             <button
               onClick={onBackToHome}
-              className="px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold transition-colors cursor-pointer shadow-xs"
+              className="px-3 sm:px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold transition-colors cursor-pointer shadow-xs text-[11px] sm:text-xs"
             >
               Save
             </button>
@@ -481,7 +481,7 @@ export default function AdminDashboardPage({
         </header>
 
         {/* MAIN PANEL CONTENT AREA */}
-        <main className="p-6 flex-1 overflow-y-auto space-y-6">
+        <main className="p-3 sm:p-6 flex-1 overflow-y-auto space-y-4 sm:space-y-6 w-full">
           {activeSidebarTab === 'orders' ? (
             /* ORDERS TAB (Exact visual replica of reference image) */
             <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">

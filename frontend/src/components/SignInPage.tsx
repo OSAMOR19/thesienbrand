@@ -33,9 +33,9 @@ export default function SignInPage({ onAdminLogin, onBackToHome, onGoToAdmin }: 
   }
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto min-h-[75vh] flex flex-col justify-center animate-fadeIn font-sans">
+    <div className="py-6 sm:py-12 px-3 sm:px-6 lg:px-8 max-w-2xl mx-auto min-h-[75vh] w-full flex flex-col justify-center animate-fadeIn font-sans">
       {/* Navigation Breadcrumbs */}
-      <div className="mb-6 flex items-center justify-between text-xs font-semibold text-[#3B1E2B]/80">
+      <div className="mb-4 sm:mb-6 flex items-center justify-between text-xs font-semibold text-[#3B1E2B]/80 px-1">
         <button
           onClick={onBackToHome}
           className="hover:underline flex items-center gap-1 cursor-pointer font-bold"
@@ -46,7 +46,7 @@ export default function SignInPage({ onAdminLogin, onBackToHome, onGoToAdmin }: 
       </div>
 
       {/* Main Form Card */}
-      <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8 border border-white/60">
+      <div className="bg-white rounded-3xl p-5 sm:p-10 lg:p-12 shadow-2xl space-y-6 sm:space-y-8 border border-white/60 w-full">
         {/* Brand Logo Header */}
         <div className="text-center space-y-3">
           <img

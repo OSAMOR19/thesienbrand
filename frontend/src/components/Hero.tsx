@@ -19,16 +19,15 @@ export default function Hero({ onOpenCollections }: HeroProps) {
       id: 1,
       title: 'Handcrafted Beaded Bags: Minimal. Elegant. Iconic.',
       subtitle: 'Experience artisan beadweaving with smooth modern silhouettes.',
-      video: '/videos/hero-pinterest-video.mp4',
-      fallbackImage: '/images/extracted_img_3.webp',
+      video: '/videos/black-beaded-purse.mp4',
+      fallbackImage: '/images/handmade-beaded-bags-display.webp',
       badgeText: '+10K Satisfied Clients',
     },
     {
       id: 2,
       title: 'Statement Beaded Purses for Every Occasion',
       subtitle: 'Elevate cocktail dresses and evening gowns with lustrous beaded shine.',
-      video: '/videos/hero-pinterest-video.mp4',
-      fallbackImage: '/images/beaded-bag-lifestyle-portrait-elegant-woman-white-shirt.webp',
+      fallbackImage: '/images/pearl-beaded-bag-collection-white-shoulder-bag.png',
       badgeText: 'Handcrafted Luxury',
     },
     {
@@ -43,8 +42,7 @@ export default function Hero({ onOpenCollections }: HeroProps) {
       id: 4,
       title: 'Iconic Pearl & Acrylic Handbags',
       subtitle: 'Free worldwide shipping on all orders with zero minimum purchase.',
-      video: '/videos/hero-pinterest-video.mp4',
-      fallbackImage: '/images/handmade-beaded-bags-display.webp',
+      fallbackImage: '/images/beaded-bag-collection-multicolor-display.webp',
       badgeText: 'Free Worldwide Shipping',
     },
   ]
@@ -81,7 +79,7 @@ export default function Hero({ onOpenCollections }: HeroProps) {
   const activeSlideData = slides[currentSlide]
 
   return (
-    <section className="relative min-h-[580px] lg:min-h-[660px] flex items-center justify-start overflow-hidden bg-black text-white">
+    <section className="relative min-h-[520px] sm:min-h-[580px] lg:min-h-[660px] flex items-center justify-start overflow-hidden bg-black text-white w-full">
       {/* Background Video Slides Carousel */}
       {slides.map((slide, idx) => (
         <div
@@ -109,28 +107,26 @@ export default function Hero({ onOpenCollections }: HeroProps) {
           )}
 
           {/* Dark gradient overlay for ultra-crisp text legibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-black/30" />
         </div>
       ))}
 
-      {/* Hero Content Overlay */}
-      <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-16 lg:py-24 w-full">
-        <div className="max-w-xl space-y-6 text-white animate-fade-in">
+      {/* Hero Content Overlay (Wider Mobile Layout) */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-20 lg:py-24 w-full">
+        <div className="max-w-2xl space-y-5 sm:space-y-6 text-white animate-fade-in">
           {/* Top Badge Text */}
           <div className="flex items-center gap-3">
-            <span className="bg-[#3B1E2B]/90 backdrop-blur-md border border-white/20 text-white font-bold text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+            <span className="bg-[#3B1E2B]/90 backdrop-blur-md border border-white/20 text-white font-bold text-[11px] sm:text-xs px-3 sm:px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
               {activeSlideData.badgeText}
             </span>
           </div>
-
-
 
           {/* Dynamic Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight font-sans drop-shadow-md transition-all duration-500">
             {activeSlideData.title}
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-normal drop-shadow-xs">
+          <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-normal drop-shadow-xs max-w-xl">
             {activeSlideData.subtitle}
           </p>
 
@@ -138,7 +134,7 @@ export default function Hero({ onOpenCollections }: HeroProps) {
           <div className="pt-2">
             <button
               onClick={onOpenCollections}
-              className="inline-flex items-center gap-2.5 bg-[#3B1E2B] text-white font-extrabold px-8 py-4 rounded-2xl text-sm hover:bg-[#2B141F] transition-all duration-200 shadow-xl cursor-pointer hover:scale-105 active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#3B1E2B] text-white font-extrabold px-8 py-4 rounded-2xl text-sm hover:bg-[#2B141F] transition-all duration-200 shadow-xl cursor-pointer hover:scale-105 active:scale-95"
             >
               <span>Explore All Collections</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,11 +145,11 @@ export default function Hero({ onOpenCollections }: HeroProps) {
         </div>
       </div>
 
-      {/* Video Carousel Slide Controls (Left/Right Arrows & Indicators) */}
-      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-4 bg-black/40 backdrop-blur-md px-4 py-2.5 rounded-full border border-white/10">
+      {/* Video Carousel Slide Controls */}
+      <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex items-center gap-3 sm:gap-4 bg-black/50 backdrop-blur-md px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-full border border-white/10">
         <button
           onClick={prevSlide}
-          className="p-1.5 text-white/80 hover:text-white transition-colors cursor-pointer"
+          className="p-1 text-white/80 hover:text-white transition-colors cursor-pointer"
           aria-label="Previous Video Slide"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +164,7 @@ export default function Hero({ onOpenCollections }: HeroProps) {
               key={idx}
               onClick={() => setCurrentSlide(idx)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                idx === currentSlide ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
+                idx === currentSlide ? 'w-5 sm:w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
@@ -177,7 +173,7 @@ export default function Hero({ onOpenCollections }: HeroProps) {
 
         <button
           onClick={nextSlide}
-          className="p-1.5 text-white/80 hover:text-white transition-colors cursor-pointer"
+          className="p-1 text-white/80 hover:text-white transition-colors cursor-pointer"
           aria-label="Next Video Slide"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
