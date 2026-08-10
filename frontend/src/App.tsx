@@ -19,7 +19,6 @@ import CartDrawer from './components/CartDrawer'
 import CurrencySelectorModal from './components/CurrencySelectorModal'
 import SearchModal from './components/SearchModal'
 import CategoryViewModal from './components/CategoryViewModal'
-import AuthModal from './components/AuthModal'
 import TrackOrderModal from './components/TrackOrderModal'
 import PolicyModal from './components/PolicyModal'
 import CollectionsPage from './components/CollectionsPage'
@@ -29,16 +28,16 @@ import BlogListPage from './components/BlogListPage'
 import BlogPostPage from './components/BlogPostPage'
 import FaqPage from './components/FaqPage'
 import ProductDetailPage from './components/ProductDetailPage'
-import AdminDashboardModal from './components/AdminDashboardModal'
+import SignInPage from './components/SignInPage'
+import AdminDashboardPage from './components/AdminDashboardPage'
 import { products, type Product } from './data/products'
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'collections' | 'contact' | 'about' | 'blog-list' | 'blog-post' | 'faqs' | 'product-detail'>('home')
+  const [currentView, setCurrentView] = useState<'home' | 'collections' | 'contact' | 'about' | 'blog-list' | 'blog-post' | 'faqs' | 'product-detail' | 'signin' | 'admin'>('home')
   const [selectedPostSlug, setSelectedPostSlug] = useState<string>('are-beaded-bags-good-for-evening-wear')
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isCurrencyModalOpen, setIsCurrencyModalOpen] = useState(false)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
   const [isTrackOrderModalOpen, setIsTrackOrderModalOpen] = useState(false)
   const [activePolicy, setActivePolicy] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -47,7 +46,6 @@ export default function App() {
   const [customProducts, setCustomProducts] = useState<Product[]>(products)
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
   const [adminEmail, setAdminEmail] = useState('')
-  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false)
 
   const bestSellers = customProducts.filter((p) => p.isBestSeller)
 
@@ -80,6 +78,12 @@ export default function App() {
       setSelectedProduct(extraProduct)
       window.location.hash = `product/${extraProduct.id}`
       setCurrentView('product-detail')
+    } else if (view === 'signin') {
+      window.location.hash = 'signin'
+      setCurrentView('signin')
+    } else if (view === 'admin') {
+      window.location.hash = 'admin'
+      setCurrentView('admin')
     }
   }
 
@@ -94,7 +98,7 @@ export default function App() {
   const handleAdminLogin = (email: string) => {
     setIsAdminLoggedIn(true)
     setAdminEmail(email)
-    setIsAdminModalOpen(true)
+    navigateToView('admin')
   }
 
   // Dynamic Document Title based on view and slash / page title
@@ -125,6 +129,10 @@ export default function App() {
       title = `${postTitle} / ${siteBrand}`
     } else if (currentView === 'product-detail' && selectedProduct) {
       title = `${selectedProduct.name} / ${siteBrand}`
+    } else if (currentView === 'signin') {
+      title = `Sign In / ${siteBrand}`
+    } else if (currentView === 'admin') {
+      title = `Admin Dashboard / ${siteBrand}`
     }
 
     document.title = title
@@ -167,6 +175,12 @@ export default function App() {
           setCurrentView('product-detail')
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }
+      } else if (hash === '#signin' || hash === '#login') {
+        setCurrentView('signin')
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      } else if (hash === '#admin' || hash === '#dashboard') {
+        setCurrentView('admin')
+        window.scrollTo({ top: 0, behavior: 'smooth' })
       } else if (hash === '' || hash === '#' || hash === '#home') {
         setCurrentView('home')
         window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -195,10 +209,10 @@ export default function App() {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setIsAdminModalOpen(true)}
+              onClick={() => navigateToView('admin')}
               className="bg-amber-400 hover:bg-amber-300 text-gray-900 px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer shadow-sm hover:scale-105"
             >
-              Open Admin Dashboard &amp; Media Upload
+              Open Admin Dashboard Page &amp; Media Upload
             </button>
             <button
               onClick={() => setIsAdminLoggedIn(false)}
@@ -214,7 +228,7 @@ export default function App() {
       <Header
         onOpenCurrency={() => setIsCurrencyModalOpen(true)}
         onOpenSearch={() => setIsSearchModalOpen(true)}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenAuth={() => navigateToView('signin')}
         onOpenCollections={() => navigateToView('collections')}
         onGoHome={() => navigateToView('home')}
         onSelectCategory={(categoryName) => setActiveCategory(categoryName)}
@@ -254,6 +268,22 @@ export default function App() {
             postSlug={selectedPostSlug}
             onBackToBlog={() => navigateToView('blog-list')}
             onBackToHome={() => navigateToView('home')}
+          />
+        ) : currentView === 'signin' ? (
+          <SignInPage
+            onAdminLogin={handleAdminLogin}
+            onBackToHome={() => navigateToView('home')}
+            onGoToAdmin={() => navigateToView('admin')}
+          />
+        ) : currentView === 'admin' ? (
+          <AdminDashboardPage
+            productsList={customProducts}
+            onUpdateProducts={(updated) => setCustomProducts(updated)}
+            onBackToHome={() => navigateToView('home')}
+            isAdminLoggedIn={isAdminLoggedIn}
+            adminEmail={adminEmail}
+            onLogoutAdmin={() => setIsAdminLoggedIn(false)}
+            onGoToSignIn={() => navigateToView('signin')}
           />
         ) : (
           <>
@@ -336,7 +366,7 @@ export default function App() {
       {/* Footer */}
       <Footer
         onOpenTrackOrder={() => setIsTrackOrderModalOpen(true)}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
+        onOpenAuth={() => navigateToView('signin')}
         onOpenContact={() => navigateToView('contact')}
         onOpenFaq={() => navigateToView('faqs')}
         onOpenAboutUs={() => navigateToView('about')}
@@ -361,11 +391,6 @@ export default function App() {
         onClose={() => setActiveCategory(null)}
         onSelectProduct={handleSelectProduct}
       />
-      <AuthModal
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-        onAdminLogin={handleAdminLogin}
-      />
       <TrackOrderModal
         isOpen={isTrackOrderModalOpen}
         onClose={() => setIsTrackOrderModalOpen(false)}
@@ -374,14 +399,7 @@ export default function App() {
         policyType={activePolicy}
         onClose={() => setActivePolicy(null)}
       />
-
-      {/* Admin Dashboard Modal */}
-      <AdminDashboardModal
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
-        productsList={customProducts}
-        onUpdateProducts={(updated) => setCustomProducts(updated)}
-      />
     </div>
   )
 }
+
