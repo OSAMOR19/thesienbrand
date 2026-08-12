@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import type { Product } from '../data/products'
-import { uploadMediaToSupabase } from '../services/products'
-import { isSupabaseConfigured } from '../lib/supabaseClient'
 
 export interface AdminOrder {
   id: string
@@ -10,9 +8,7 @@ export interface AdminOrder {
   items: string
   total: number
   date: string
-  fulfillmentStatus: 'Processing' | 'Delivering' | 'Completed' | 'Canceled'
-  paymentStatus: 'Paid' | 'Wait for pay' | 'Refunded'
-  selected?: boolean
+  status: 'Processing' | 'Delivered' | 'Canceled'
 }
 
 interface AdminDashboardPageProps {
@@ -34,78 +30,220 @@ export default function AdminDashboardPage({
   onLogoutAdmin,
   onGoToSignIn,
 }: AdminDashboardPageProps) {
-  const [activeSidebarTab, setActiveSidebarTab] = useState<'dashboard' | 'orders' | 'products' | 'customers' | 'settings'>('orders')
-  const [orderFilterTab, setOrderFilterTab] = useState<'All' | 'Processing' | 'Delivering' | 'Completed' | 'Canceled'>('All')
-  const [searchQuery, setSearchQuery] = useState('')
+  // Sidebar tab navigation: 'dashboard' | 'products' | 'orders'
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard')
+  const [orderFilter, setOrderFilter] = useState<'All' | 'Processing' | 'Delivered' | 'Canceled'>('All')
+
+  // Product Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingProductId, setEditingProductId] = useState<string | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
-  const [uploadStatusMsg, setUploadStatusMsg] = useState('')
-
-  // Orders State (Matching the reference layout image)
-  const [orders, setOrders] = useState<AdminOrder[]>([
-    { id: 'UID23456', customer: 'Pauline Wright', email: 'pauline@example.com', items: 'Black Beaded Purse x1', total: 2499, date: '2026/10/31', fulfillmentStatus: 'Delivering', paymentStatus: 'Paid', selected: true },
-    { id: 'UID23457', customer: 'Estella Brewer', email: 'estella@example.com', items: 'Pearl Beaded Bag x1', total: 780, date: '2026/10/31', fulfillmentStatus: 'Completed', paymentStatus: 'Wait for pay', selected: true },
-    { id: 'UID23458', customer: 'May Castro', email: 'may@example.com', items: 'Lemon Beaded Bag x1', total: 529, date: '2026/10/18', fulfillmentStatus: 'Processing', paymentStatus: 'Wait for pay', selected: false },
-    { id: 'UID23410', customer: 'Isabella Figueroa', email: 'isabella@example.com', items: 'Gold Metallic Bag x1', total: 3888, date: '2026/10/12', fulfillmentStatus: 'Processing', paymentStatus: 'Paid', selected: true },
-    { id: 'UID23472', customer: 'Derrick Caldwell', email: 'derrick@example.com', items: 'Clear Beaded Purse x1', total: 765, date: '2026/10/04', fulfillmentStatus: 'Processing', paymentStatus: 'Wait for pay', selected: false },
-    { id: 'UID23433', customer: 'Peter Su', email: 'peter@example.com', items: 'Pink Beaded Purse x1', total: 1080, date: '2026/09/22', fulfillmentStatus: 'Canceled', paymentStatus: 'Paid', selected: false },
-    { id: 'UID23436', customer: 'John Mayer', email: 'john@example.com', items: 'Pearl Sequin Bag x1', total: 2499, date: '2026/09/16', fulfillmentStatus: 'Canceled', paymentStatus: 'Paid', selected: false },
-    { id: 'UID23490', customer: 'Sophia Bennett', email: 'sophia@example.com', items: 'Green Beaded Purse x1', total: 1250, date: '2026/09/10', fulfillmentStatus: 'Completed', paymentStatus: 'Paid', selected: false },
-    { id: 'UID23491', customer: 'Emma Watson', email: 'emma@example.com', items: 'Yellow Handbag x1', total: 890, date: '2026/09/05', fulfillmentStatus: 'Delivering', paymentStatus: 'Paid', selected: false },
-  ])
-
-  // Form state for creating/editing product
+  
+  // Product Form State
   const [formData, setFormData] = useState<{
-    id: string
     name: string
+    category: string
     priceUSD: number
-    collection: string
+    priceNaira: number
     color: string
     material: string
     image: string
+    hoverImage: string
     video: string
     isBestSeller: boolean
+    status: 'Active' | 'Draft'
   }>({
-    id: '',
     name: '',
+    category: 'Jewelry',
     priceUSD: 100,
-    collection: 'Best Sellers',
-    color: 'Black',
-    material: 'Acrylic Beads',
-    image: '/images/black-beaded-purse-1.png',
+    priceNaira: 10500,
+    color: 'Multicolor',
+    material: 'Resin & Glass Beads',
+    image: '/images/bags-with-beads-1.png',
+    hoverImage: '',
     video: '',
     isBestSeller: false,
+    status: 'Active',
   })
+
+  // Sample Orders State
+  const [orders] = useState<AdminOrder[]>([])
+
+  // Hash Navigation Listener (#admin/dashboard, #admin/products, #admin/orders)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash
+      if (hash === '#admin/products' || hash === '#admin-products') {
+        setActiveTab('products')
+      } else if (hash === '#admin/orders' || hash === '#admin-orders') {
+        setActiveTab('orders')
+      } else if (hash === '#admin/dashboard' || hash === '#admin') {
+        setActiveTab('dashboard')
+      }
+    }
+    handleHash()
+    window.addEventListener('hashchange', handleHash)
+    return () => window.removeEventListener('hashchange', handleHash)
+  }, [])
+
+  const switchTab = (tab: 'dashboard' | 'products' | 'orders') => {
+    setActiveTab(tab)
+    window.location.hash = `admin/${tab}`
+  }
+
+  // Formatting helpers
+  const getProductSlug = (p: Product) => {
+    return p.id || p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  }
+
+  const formatNaira = (amount: number) => {
+    return `₦${amount.toLocaleString()}`
+  }
+
+  const getDisplayPriceNaira = (p: Product) => {
+    if ((p as any).priceNaira) return (p as any).priceNaira
+    return Math.round(p.priceUSD * 105)
+  }
+
+  // Handle open create modal
+  const handleOpenCreate = () => {
+    setEditingProductId(null)
+    setFormData({
+      name: '',
+      category: 'Jewelry',
+      priceUSD: 100,
+      priceNaira: 10500,
+      color: 'Multicolor',
+      material: 'Resin & Glass Beads',
+      image: '/images/bags-with-beads-1.png',
+      hoverImage: '',
+      video: '',
+      isBestSeller: false,
+      status: 'Active',
+    })
+    setIsModalOpen(true)
+  }
+
+  // Handle open edit modal
+  const handleOpenEdit = (p: Product) => {
+    setEditingProductId(p.id)
+    setFormData({
+      name: p.name,
+      category: p.collection || 'Jewelry',
+      priceUSD: p.priceUSD || 100,
+      priceNaira: getDisplayPriceNaira(p),
+      color: p.color || '',
+      material: p.material || '',
+      image: p.image || '/images/bags-with-beads-1.png',
+      hoverImage: p.hoverImage || '',
+      video: p.video || '',
+      isBestSeller: !!p.isBestSeller,
+      status: 'Active',
+    })
+    setIsModalOpen(true)
+  }
+
+  // Handle delete product
+  const handleDeleteProduct = (id: string, name: string) => {
+    if (window.confirm(`Are you sure you want to delete "${name}"?`)) {
+      const updated = productsList.filter((p) => p.id !== id)
+      onUpdateProducts(updated)
+    }
+  }
+
+  // Device file uploader helper
+  const handleDeviceFileUpload = (e: React.ChangeEvent<HTMLInputElement>, field: 'image' | 'hoverImage' | 'video') => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const result = event.target?.result as string
+      if (result) {
+        setFormData((prev) => ({ ...prev, [field]: result }))
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+
+  // Handle Save Product Form Submit
+  const handleSaveProduct = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!formData.name.trim()) return
+
+    const slug = formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+
+    if (editingProductId) {
+      // Edit existing product
+      const updated = productsList.map((p) => {
+        if (p.id === editingProductId) {
+          return {
+            ...p,
+            name: formData.name,
+            collection: formData.category,
+            priceUSD: Number(formData.priceUSD),
+            priceNaira: Number(formData.priceNaira),
+            color: formData.color,
+            material: formData.material,
+            image: formData.image || '/images/bags-with-beads-1.png',
+            hoverImage: formData.hoverImage || undefined,
+            video: formData.video || undefined,
+            isBestSeller: formData.isBestSeller,
+          } as Product
+        }
+        return p
+      })
+      onUpdateProducts(updated)
+    } else {
+      // Create new product
+      const newProduct: Product = {
+        id: slug || `prod-${Date.now()}`,
+        name: formData.name,
+        priceUSD: Number(formData.priceUSD),
+        collection: formData.category,
+        color: formData.color,
+        material: formData.material,
+        image: formData.image || '/images/bags-with-beads-1.png',
+        hoverImage: formData.hoverImage || undefined,
+        video: formData.video || undefined,
+        isBestSeller: formData.isBestSeller,
+        galleryImages: [formData.image].filter(Boolean),
+      }
+      ;(newProduct as any).priceNaira = Number(formData.priceNaira)
+
+      onUpdateProducts([newProduct, ...productsList])
+    }
+
+    setIsModalOpen(false)
+  }
 
   // Access Control Guard
   if (!isAdminLoggedIn) {
     return (
-      <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-xl mx-auto min-h-[70vh] flex flex-col justify-center animate-fadeIn font-sans">
-        <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-gray-100 text-center space-y-6">
-          <div className="w-16 h-16 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center text-3xl mx-auto font-extrabold shadow-xs">
+      <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center p-6 font-sans">
+        <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-gray-100 max-w-md w-full text-center space-y-6">
+          <div className="w-16 h-16 rounded-full bg-amber-100 text-[#8C6B1C] flex items-center justify-center text-3xl mx-auto font-black">
             🔒
           </div>
           <div className="space-y-2">
-            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+            <h1 className="text-2xl font-serif font-bold text-gray-900 tracking-tight">
               Admin Access Required
             </h1>
-            <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-              You must be logged in with admin privileges to view and manage The Sien Studio panel.
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Please sign in with your administrative credentials to manage store products, orders, and dashboard metrics.
             </p>
           </div>
 
-          <div className="pt-2 flex flex-col gap-3">
+          <div className="pt-2 space-y-3">
             <button
               onClick={onGoToSignIn}
-              className="w-full py-3.5 px-6 rounded-2xl bg-[#1D212A] hover:bg-[#151821] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer hover:scale-[1.01]"
+              className="w-full py-3.5 px-6 rounded-full bg-[#8C6B1C] hover:bg-[#785B17] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer"
             >
-              ⚡ Sign In as Admin Page
+              Sign In as Admin
             </button>
             <button
               onClick={onBackToHome}
-              className="w-full py-3 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
+              className="w-full py-3 px-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer"
             >
-              Return to Public Store
+              Back to Storefront
             </button>
           </div>
         </div>
@@ -113,548 +251,298 @@ export default function AdminDashboardPage({
     )
   }
 
-  // Handle uploading media file directly from user device
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'video' | 'image') => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    setIsUploading(true)
-    setUploadStatusMsg(`Uploading ${field} from device...`)
-
-    const publicUrl = await uploadMediaToSupabase(file, field === 'video' ? 'videos' : 'images')
-    if (publicUrl) {
-      setIsUploading(false)
-      setUploadStatusMsg('Uploaded to Supabase CDN!')
-      if (field === 'video') {
-        setFormData((prev) => ({ ...prev, video: publicUrl }))
-      } else {
-        setFormData((prev) => ({ ...prev, image: publicUrl }))
-      }
-      setTimeout(() => setUploadStatusMsg(''), 3000)
-      return
-    }
-
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      setIsUploading(false)
-      setUploadStatusMsg('Loaded from device (Local Preview)')
-      const result = event.target?.result as string
-      if (result) {
-        if (field === 'video') {
-          setFormData((prev) => ({ ...prev, video: result }))
-        } else {
-          setFormData((prev) => ({ ...prev, image: result }))
-        }
-      }
-      setTimeout(() => setUploadStatusMsg(''), 3000)
-    }
-    reader.readAsDataURL(file)
-  }
-
-  const handleEditClick = (p: Product) => {
-    setEditingProductId(p.id)
-    setFormData({
-      id: p.id,
-      name: p.name,
-      priceUSD: p.priceUSD,
-      collection: p.collection,
-      color: p.color,
-      material: p.material,
-      image: p.image,
-      video: p.video || '',
-      isBestSeller: !!p.isBestSeller,
-    })
-  }
-
-  const handleSaveProduct = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!formData.name) return
-
-    if (editingProductId) {
-      const updated = productsList.map((p) =>
-        p.id === editingProductId
-          ? {
-              ...p,
-              name: formData.name,
-              priceUSD: Number(formData.priceUSD),
-              collection: formData.collection as any,
-              color: formData.color,
-              material: formData.material,
-              image: formData.image || '/images/black-beaded-purse-1.png',
-              video: formData.video || undefined,
-              isBestSeller: formData.isBestSeller,
-            }
-          : p
-      )
-      onUpdateProducts(updated)
-    } else {
-      const newProd: Product = {
-        id: formData.name.toLowerCase().replace(/\s+/g, '-'),
-        name: formData.name,
-        priceUSD: Number(formData.priceUSD),
-        collection: formData.collection as any,
-        color: formData.color,
-        material: formData.material,
-        image: formData.image || '/images/black-beaded-purse-1.png',
-        video: formData.video || undefined,
-        isBestSeller: formData.isBestSeller,
-      }
-      onUpdateProducts([newProd, ...productsList])
-    }
-
-    resetForm()
-  }
-
-  const resetForm = () => {
-    setEditingProductId(null)
-    setFormData({
-      id: '',
-      name: '',
-      priceUSD: 100,
-      collection: 'Best Sellers',
-      color: 'Black',
-      material: 'Acrylic Beads',
-      image: '/images/black-beaded-purse-1.png',
-      video: '',
-      isBestSeller: false,
-    })
-    setUploadStatusMsg('')
-  }
-
-  // Order Handlers
-  const handleToggleSelectOrder = (id: string) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, selected: !o.selected } : o))
-    )
-  }
-
-  const handleToggleSelectAll = () => {
-    const allSelected = orders.every((o) => o.selected)
-    setOrders((prev) => prev.map((o) => ({ ...o, selected: !allSelected })))
-  }
-
-  const handleChangeOrderStatus = (id: string, newStatus: AdminOrder['fulfillmentStatus']) => {
-    setOrders((prev) =>
-      prev.map((o) => (o.id === id ? { ...o, fulfillmentStatus: newStatus } : o))
-    )
-  }
-
-  const handleDeleteOrder = (id: string) => {
-    setOrders((prev) => prev.filter((o) => o.id !== id))
-  }
-
-  const handleAddNewOrderPrompt = () => {
-    const customer = prompt('Enter customer name:', 'Sarah Jenkins')
-    if (!customer) return
-    const newOrd: AdminOrder = {
-      id: `UID${Math.floor(10000 + Math.random() * 90000)}`,
-      customer,
-      email: `${customer.toLowerCase().replace(/\s+/g, '.')}@example.com`,
-      items: 'Custom Beaded Clutch x1',
-      total: 1450,
-      date: new Date().toISOString().split('T')[0].replace(/-/g, '/'),
-      fulfillmentStatus: 'Processing',
-      paymentStatus: 'Paid',
-      selected: false,
-    }
-    setOrders([newOrd, ...orders])
-  }
-
-  // Filtered Orders
-  const filteredOrders = orders.filter((o) => {
-    const matchesFilter =
-      orderFilterTab === 'All' ? true : o.fulfillmentStatus === orderFilterTab
-    const matchesSearch =
-      o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.customer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      o.items.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesFilter && matchesSearch
-  })
+  const totalRevenue = orders.reduce((acc, o) => acc + o.total, 0)
+  const displayUserEmail = adminEmail || 'juliesglossglow@gmail.com'
 
   return (
-    <div className="min-h-screen bg-[#E5E9EE] font-sans antialiased flex flex-col lg:flex-row text-gray-700">
-      {/* LEFT SIDEBAR (Dark Navy Theme matching reference image) */}
-      <aside className="w-full lg:w-64 bg-[#1B212D] text-gray-300 flex-shrink-0 flex flex-col justify-between select-none">
-        <div>
-          {/* Brand Logo Header */}
-          <div className="px-5 py-5 border-b border-gray-800 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#2563EB] flex items-center justify-center font-black text-white text-base shadow-sm">
-                A
-              </div>
-              <span className="font-extrabold text-white text-base tracking-tight font-sans">
-                The Sien Studio
-              </span>
+    <div className="min-h-screen bg-[#F5F5F7] font-sans antialiased flex flex-col lg:flex-row text-gray-900">
+      {/* LEFT SIDEBAR (Dark #0D0D0D Theme matching reference images) */}
+      <aside className="w-full lg:w-64 bg-[#0D0D0D] text-gray-300 flex-shrink-0 flex flex-col justify-between select-none p-5 lg:min-h-screen border-r border-gray-900">
+        <div className="space-y-6">
+          {/* Top Brand Logo Section */}
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-[#C59B27] flex items-center justify-center font-bold text-gray-900 text-lg shadow-sm">
+              🚀
             </div>
-            <button className="text-gray-400 hover:text-white transition-colors cursor-pointer text-xs">
-              ⇅
-            </button>
+            <div>
+              <h2 className="font-bold text-white text-base font-sans tracking-tight leading-tight">
+                Julie's Gloss &amp; Glow
+              </h2>
+              <span className="text-[11px] text-gray-400 font-sans block">Admin Panel</span>
+            </div>
           </div>
 
+          {/* Go to Storefront Button */}
+          <button
+            onClick={onBackToHome}
+            className="w-full py-2.5 px-4 rounded-full border border-[#C59B27]/80 hover:bg-[#C59B27]/10 text-[#C59B27] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>👁</span>
+            <span>GO TO STOREFRONT</span>
+          </button>
+
           {/* Navigation Links */}
-          <nav className="px-3 py-4 space-y-1 text-xs font-semibold">
+          <nav className="space-y-1.5 pt-2 text-sm font-medium">
             {/* Dashboard */}
             <button
-              onClick={() => setActiveSidebarTab('dashboard')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
-                activeSidebarTab === 'dashboard'
-                  ? 'bg-[#283042] text-white font-extrabold'
-                  : 'hover:bg-gray-800/60 text-gray-400 hover:text-gray-200'
+              onClick={() => switchTab('dashboard')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all cursor-pointer ${
+                activeTab === 'dashboard'
+                  ? 'bg-[#8C6B1C] text-white font-bold shadow-xs'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span>📊</span>
+                <span className="text-base">📊</span>
                 <span>Dashboard</span>
               </div>
-              <span className="w-2 h-2 rounded-full bg-blue-500" />
+              {activeTab === 'dashboard' && <span className="text-xs font-bold">&gt;</span>}
             </button>
-
-            {/* Orders Accordion Header */}
-            <div>
-              <button
-                onClick={() => setActiveSidebarTab('orders')}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
-                  activeSidebarTab === 'orders'
-                    ? 'bg-[#283042] text-white font-extrabold'
-                    : 'hover:bg-gray-800/60 text-gray-400 hover:text-gray-200'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span>📜</span>
-                  <span>Order</span>
-                </div>
-                <span className="text-[10px]">▼</span>
-              </button>
-
-              {/* Sub-item */}
-              {activeSidebarTab === 'orders' && (
-                <div className="pl-9 pr-3 py-2 text-[11px] text-gray-400 font-normal">
-                  <span className="bg-gray-800 px-2 py-1 rounded text-cyan-400 font-bold block cursor-pointer">
-                    Picking Mode
-                  </span>
-                </div>
-              )}
-            </div>
 
             {/* Products */}
             <button
-              onClick={() => setActiveSidebarTab('products')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
-                activeSidebarTab === 'products'
-                  ? 'bg-[#283042] text-white font-extrabold'
-                  : 'hover:bg-gray-800/60 text-gray-400 hover:text-gray-200'
+              onClick={() => switchTab('products')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all cursor-pointer ${
+                activeTab === 'products'
+                  ? 'bg-[#8C6B1C] text-white font-bold shadow-xs'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span>📦</span>
-                <span>Products &amp; Upload</span>
+                <span className="text-base">📦</span>
+                <span>Products</span>
               </div>
-              <span className="text-[10px]">▼</span>
+              {activeTab === 'products' && <span className="text-xs font-bold">&gt;</span>}
             </button>
 
-            {/* Customers */}
+            {/* Orders */}
             <button
-              onClick={() => setActiveSidebarTab('customers')}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors cursor-pointer ${
-                activeSidebarTab === 'customers'
-                  ? 'bg-[#283042] text-white font-extrabold'
-                  : 'hover:bg-gray-800/60 text-gray-400 hover:text-gray-200'
+              onClick={() => switchTab('orders')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all cursor-pointer ${
+                activeTab === 'orders'
+                  ? 'bg-[#8C6B1C] text-white font-bold shadow-xs'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               <div className="flex items-center gap-3">
-                <span>👤</span>
-                <span>Customers</span>
+                <span className="text-base">📋</span>
+                <span>Orders</span>
               </div>
+              {activeTab === 'orders' && <span className="text-xs font-bold">&gt;</span>}
             </button>
-
-            {/* Report */}
-            <div className="flex items-center justify-between px-3 py-2.5 text-gray-400 hover:text-gray-200 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <span>📊</span>
-                <span>Report</span>
-              </div>
-            </div>
-
-            {/* Inventory */}
-            <div className="flex items-center justify-between px-3 py-2.5 text-gray-400 hover:text-gray-200 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <span>🛒</span>
-                <span>Inventory</span>
-              </div>
-            </div>
-
-            {/* Sales Channel */}
-            <div className="flex items-center justify-between px-3 py-2.5 text-gray-400 hover:text-gray-200 cursor-pointer">
-              <div className="flex items-center gap-3">
-                <span>📢</span>
-                <span>Sales Channel</span>
-              </div>
-            </div>
-
-            {/* My Sales Channel List */}
-            <div className="pt-3 pb-1 border-t border-gray-800/80">
-              <div className="flex items-center justify-between px-3 text-[11px] text-cyan-400 font-bold mb-2">
-                <span>My Sales Channel</span>
-                <span className="bg-gray-800 text-gray-300 px-1.5 py-0.5 rounded text-[9px]">8</span>
-              </div>
-              <div className="space-y-1 pl-3 text-[11px] text-gray-400 font-medium">
-                <div className="py-1 hover:text-white cursor-pointer">UIUX Cafe</div>
-                <div className="py-1 hover:text-white cursor-pointer">Deer Cafe</div>
-                <div className="py-1 hover:text-white cursor-pointer">Journey Kaffee</div>
-                <div className="py-1 hover:text-white cursor-pointer">Little Junkie</div>
-                <div className="py-1 hover:text-white cursor-pointer">Sunday Cafe</div>
-                <div className="py-1 text-cyan-400 font-bold tracking-widest">...</div>
-              </div>
-            </div>
           </nav>
         </div>
 
-        {/* Sidebar Footer */}
-        <div className="p-3 border-t border-gray-800 space-y-1 text-xs font-semibold">
-          {/* Settings */}
+        {/* Sidebar Bottom Profile */}
+        <div className="pt-6 border-t border-gray-900 space-y-2 mt-6 lg:mt-0">
+          <div className="text-xs text-gray-400 font-medium truncate px-1">
+            {displayUserEmail}
+          </div>
           <button
-            onClick={() => setActiveSidebarTab('settings')}
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors cursor-pointer ${
-              activeSidebarTab === 'settings'
-                ? 'bg-[#283042] text-white font-extrabold'
-                : 'hover:bg-gray-800/60 text-gray-400 hover:text-gray-200'
-            }`}
+            onClick={onLogoutAdmin}
+            className="flex items-center gap-2 text-xs text-gray-400 hover:text-white font-medium transition-colors cursor-pointer px-1 py-1"
           >
-            <div className="flex items-center gap-3">
-              <span>⚙️</span>
-              <span>Setting</span>
-            </div>
-            <span className="text-[10px]">&gt;</span>
-          </button>
-
-          {/* Return to Public Shop */}
-          <button
-            onClick={onBackToHome}
-            className="w-full flex items-center gap-3 px-3 py-2 text-amber-400 hover:text-amber-300 font-bold transition-colors cursor-pointer"
-          >
-            <span>←</span>
-            <span>Public Store</span>
+            <span>[--&gt;</span>
+            <span>Sign Out</span>
           </button>
         </div>
       </aside>
 
-      {/* RIGHT MAIN PANEL WORKSPACE */}
-      <div className="flex-1 flex flex-col min-w-0 bg-[#F4F6F9]">
-        {/* TOP NAVBAR (Matching Reference Bar) */}
-        <header className="bg-white border-b border-gray-200 px-3.5 sm:px-6 py-3 flex items-center justify-between flex-shrink-0 shadow-2xs w-full">
-          {/* Search Box */}
-          <div className="relative w-48 sm:w-80">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-8 sm:pl-9 pr-3 sm:pr-4 py-1.5 rounded-md border border-gray-200 bg-gray-50 text-xs text-gray-800 outline-none focus:border-blue-500 focus:bg-white transition-all font-medium"
-            />
-          </div>
-
-          {/* Right Admin Controls */}
-          <div className="flex items-center gap-2 sm:gap-4 text-xs font-semibold">
-            <div className="hidden sm:flex items-center gap-2 text-gray-600">
-              <span className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">
-                {adminEmail ? adminEmail[0].toUpperCase() : 'A'}
-              </span>
-              <span className="text-gray-800 font-bold">{adminEmail || 'Simon Lin'}</span>
-              <span className="text-gray-400 text-[10px]">▼</span>
+      {/* RIGHT MAIN WORKSPACE */}
+      <main className="flex-1 p-6 sm:p-10 max-w-7xl mx-auto w-full space-y-8">
+        {activeTab === 'dashboard' ? (
+          /* ======================================================== */
+          /* 1. DASHBOARD VIEW (Matching Reference Screenshot 1)      */
+          /* ======================================================== */
+          <div className="space-y-8 animate-fadeIn">
+            {/* Header */}
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 tracking-tight">
+                Dashboard
+              </h1>
+              <p className="text-sm text-gray-500 mt-1 font-sans">
+                Overview of your paint store
+              </p>
             </div>
 
-            <button
-              onClick={onLogoutAdmin}
-              className="px-2.5 sm:px-3 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors cursor-pointer border border-gray-200 text-[11px] sm:text-xs"
-            >
-              Logout
-            </button>
+            {/* Stat Cards Grid (3 Cards matching Image 1) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Card 1: Total Revenue */}
+              <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-100/80 space-y-4">
+                <div className="w-10 h-10 rounded-full bg-[#8C6B1C]/15 text-[#8C6B1C] flex items-center justify-center text-lg font-bold">
+                  📈
+                </div>
+                <div>
+                  <span className="text-xs text-gray-400 font-medium font-sans">
+                    Total Revenue (Paid Orders)
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-black text-gray-900 mt-1 font-sans">
+                    {formatNaira(totalRevenue)}
+                  </div>
+                </div>
+              </div>
 
-            <button
-              onClick={onBackToHome}
-              className="px-3 sm:px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold transition-colors cursor-pointer shadow-xs text-[11px] sm:text-xs"
-            >
-              Save
-            </button>
+              {/* Card 2: Total Orders */}
+              <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-100/80 space-y-4">
+                <div className="w-10 h-10 rounded-full bg-[#2563EB] text-white flex items-center justify-center text-lg font-bold">
+                  🛍️
+                </div>
+                <div>
+                  <span className="text-xs text-gray-400 font-medium font-sans">
+                    Total Orders
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-black text-gray-900 mt-1 font-sans">
+                    {orders.length}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3: Active Products */}
+              <div className="bg-white rounded-3xl p-6 sm:p-7 shadow-xs border border-gray-100/80 space-y-4">
+                <div className="w-10 h-10 rounded-full bg-[#10B981] text-white flex items-center justify-center text-lg font-bold">
+                  📦
+                </div>
+                <div>
+                  <span className="text-xs text-gray-400 font-medium font-sans">
+                    Active Products
+                  </span>
+                  <div className="text-2xl sm:text-3xl font-black text-gray-900 mt-1 font-sans">
+                    {productsList.length}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Low Stock Alerts Container */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-gray-100/80 space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-amber-500 text-lg">⚠️</span>
+                <h3 className="font-bold text-gray-800 text-base sm:text-lg font-serif">
+                  Low Stock Alerts
+                </h3>
+                <span className="text-xs text-gray-400 font-sans font-normal">(below 5 units)</span>
+              </div>
+
+              <div className="bg-gray-50/60 rounded-2xl p-10 text-center flex flex-col items-center justify-center space-y-2 border border-gray-100/60">
+                <div className="text-3xl">🎉</div>
+                <p className="text-sm font-semibold text-gray-600">
+                  All variants are well-stocked!
+                </p>
+              </div>
+            </div>
           </div>
-        </header>
-
-        {/* MAIN PANEL CONTENT AREA */}
-        <main className="p-3 sm:p-6 flex-1 overflow-y-auto space-y-4 sm:space-y-6 w-full">
-          {activeSidebarTab === 'orders' ? (
-            /* ORDERS TAB (Exact visual replica of reference image) */
-            <div className="bg-white rounded-xl shadow-xs border border-gray-200 overflow-hidden">
-              {/* Header Title Bar */}
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                <h1 className="text-xl font-bold text-gray-900 font-sans tracking-tight">Orders</h1>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setOrders(orders)}
-                    className="px-4 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold text-xs cursor-pointer border border-gray-200"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => alert('Orders updated successfully!')}
-                    className="px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs cursor-pointer shadow-xs"
-                  >
-                    Save
-                  </button>
-                </div>
+        ) : activeTab === 'products' ? (
+          /* ======================================================== */
+          /* 2. PRODUCTS VIEW (Matching Reference Screenshot 2)       */
+          /* ======================================================== */
+          <div className="space-y-8 animate-fadeIn">
+            {/* Header & New Product Button */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 tracking-tight">
+                  Products
+                </h1>
+                <p className="text-sm text-gray-500 mt-1 font-sans">
+                  {productsList.length} total products
+                </p>
               </div>
 
-              {/* Status Filter Tabs (All, Processing, Delivery, Completed, Canceled) */}
-              <div className="px-6 border-b border-gray-200 flex items-center gap-6 text-xs font-bold text-gray-500 bg-gray-50/50">
-                {(['All', 'Processing', 'Delivering', 'Completed', 'Canceled'] as const).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setOrderFilterTab(tab)}
-                    className={`py-3 transition-colors cursor-pointer relative ${
-                      orderFilterTab === tab ? 'text-teal-600 font-extrabold' : 'hover:text-gray-900'
-                    }`}
-                  >
-                    {tab === 'Delivering' ? 'Delivery' : tab}
-                    {orderFilterTab === tab && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-teal-500 rounded-full" />
-                    )}
-                  </button>
-                ))}
-              </div>
+              <button
+                onClick={handleOpenCreate}
+                className="bg-[#8C6B1C] hover:bg-[#785B17] text-white font-bold text-sm px-6 py-3 rounded-full shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.02] self-start sm:self-auto"
+              >
+                <span>+ New Product</span>
+              </button>
+            </div>
 
-              {/* Sub Action Bar: Search input, date range, + Add New Order */}
-              <div className="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-3 text-xs">
-                  <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">🔍</span>
-                    <input
-                      type="text"
-                      placeholder="Search orders..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-8 pr-3 py-1.5 rounded-md border border-gray-200 text-xs text-gray-800 outline-none focus:border-blue-500 w-48 sm:w-64"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-500 bg-gray-50 border border-gray-200 rounded-md px-3 py-1 text-[11px]">
-                    <span>18/11/2016</span>
-                    <span>to</span>
-                    <span>22/11/2016</span>
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleAddNewOrderPrompt}
-                  className="text-blue-600 hover:text-blue-800 text-xs font-extrabold cursor-pointer flex items-center gap-1"
-                >
-                  <span>+ Add New Order</span>
-                </button>
-              </div>
-
-              {/* Table Data */}
+            {/* Products Table Card */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-gray-100/80 overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-gray-700">
-                  <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px] tracking-wider">
-                    <tr>
-                      <th className="py-3 px-4 w-10">
-                        <div className="flex items-center gap-1">
-                          <input
-                            type="checkbox"
-                            checked={orders.length > 0 && orders.every((o) => o.selected)}
-                            onChange={handleToggleSelectAll}
-                            className="w-4 h-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
-                          />
-                          <span className="text-[10px] text-gray-400">▾</span>
-                        </div>
-                      </th>
-                      <th className="py-3 px-4">Order</th>
-                      <th className="py-3 px-4">Date</th>
-                      <th className="py-3 px-4">Buyer name</th>
-                      <th className="py-3 px-4">Fulfillment status</th>
-                      <th className="py-3 px-4">Total price</th>
-                      <th className="py-3 px-4">Payment status</th>
-                      <th className="py-3 px-4 text-right">Action</th>
+                <table className="w-full text-left text-xs font-sans">
+                  <thead>
+                    <tr className="text-gray-400 font-bold uppercase tracking-wider text-[11px] border-b border-gray-100 pb-4">
+                      <th className="pb-4 font-semibold">PRODUCT</th>
+                      <th className="pb-4 font-semibold">CATEGORY</th>
+                      <th className="pb-4 font-semibold">BASE PRICE</th>
+                      <th className="pb-4 font-semibold">VARIANTS</th>
+                      <th className="pb-4 font-semibold">STATUS</th>
+                      <th className="pb-4 text-right font-semibold">ACTIONS</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {filteredOrders.map((o) => {
-                      const isCanceled = o.fulfillmentStatus === 'Canceled'
+                  <tbody className="divide-y divide-gray-100/80">
+                    {productsList.map((prod) => {
+                      const nairaPrice = getDisplayPriceNaira(prod)
+                      const slug = getProductSlug(prod)
+                      const variantCount = prod.galleryImages?.length || 1
+
                       return (
-                        <tr
-                          key={o.id}
-                          className={`transition-colors ${
-                            isCanceled
-                              ? 'bg-rose-50/60 hover:bg-rose-50 text-rose-900'
-                              : o.selected
-                              ? 'bg-blue-50/20 hover:bg-blue-50/40'
-                              : 'hover:bg-gray-50'
-                          }`}
-                        >
-                          <td className="py-3.5 px-4">
-                            <input
-                              type="checkbox"
-                              checked={!!o.selected}
-                              onChange={() => handleToggleSelectOrder(o.id)}
-                              className="w-4 h-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
-                            />
+                        <tr key={prod.id} className="hover:bg-gray-50/60 transition-colors group">
+                          {/* PRODUCT */}
+                          <td className="py-4 pr-4">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-12 h-12 rounded-2xl bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200/60 shadow-2xs">
+                                {prod.video ? (
+                                  <video src={prod.video} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                                ) : (
+                                  <img src={prod.image} alt={prod.name} className="w-full h-full object-cover" />
+                                )}
+                              </div>
+                              <div className="min-w-0">
+                                <h4
+                                  onClick={() => handleOpenEdit(prod)}
+                                  className="font-bold text-sm text-gray-900 group-hover:text-[#8C6B1C] transition-colors truncate cursor-pointer"
+                                >
+                                  {prod.name}
+                                </h4>
+                                <span className="text-xs text-gray-400 font-mono block truncate">
+                                  {slug}
+                                </span>
+                              </div>
+                            </div>
                           </td>
-                          <td className="py-3.5 px-4 font-bold text-cyan-600 hover:underline cursor-pointer">
-                            {o.id}
-                          </td>
-                          <td className="py-3.5 px-4 text-gray-500 font-medium">{o.date}</td>
-                          <td className="py-3.5 px-4 font-bold text-gray-800">{o.customer}</td>
-                          <td className="py-3.5 px-4">
-                            <select
-                              value={o.fulfillmentStatus}
-                              onChange={(e) =>
-                                handleChangeOrderStatus(
-                                  o.id,
-                                  e.target.value as AdminOrder['fulfillmentStatus']
-                                )
-                              }
-                              className={`px-2.5 py-1 rounded border text-[11px] font-semibold outline-none cursor-pointer ${
-                                isCanceled
-                                  ? 'bg-rose-100 border-rose-200 text-rose-700'
-                                  : o.fulfillmentStatus === 'Completed'
-                                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
-                                  : 'bg-white border-gray-200 text-gray-700'
-                              }`}
-                            >
-                              <option value="Processing">Processing</option>
-                              <option value="Delivering">Delivering</option>
-                              <option value="Completed">Completed</option>
-                              <option value="Canceled">Canceled</option>
-                            </select>
-                          </td>
-                          <td className="py-3.5 px-4 font-bold text-gray-900">
-                            NT$ {o.total.toLocaleString()}
-                          </td>
-                          <td className="py-3.5 px-4 font-semibold">
-                            <span
-                              className={`text-[11px] ${
-                                o.paymentStatus === 'Paid' ? 'text-gray-700' : 'text-gray-400'
-                              }`}
-                            >
-                              {o.paymentStatus}
+
+                          {/* CATEGORY */}
+                          <td className="py-4 px-4 whitespace-nowrap">
+                            <span className="bg-gray-100 text-gray-700 font-semibold px-3 py-1 rounded-full text-[11px]">
+                              {prod.collection || 'General'}
                             </span>
                           </td>
-                          <td className="py-3.5 px-4 text-right">
-                            {isCanceled ? (
+
+                          {/* BASE PRICE */}
+                          <td className="py-4 px-4 whitespace-nowrap font-bold text-gray-900">
+                            {formatNaira(nairaPrice)}
+                          </td>
+
+                          {/* VARIANTS */}
+                          <td className="py-4 px-4 whitespace-nowrap text-gray-500 font-medium">
+                            {variantCount} {variantCount === 1 ? 'variant' : 'variants'}
+                          </td>
+
+                          {/* STATUS */}
+                          <td className="py-4 px-4 whitespace-nowrap">
+                            <span className="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1.5">
+                              Active
+                            </span>
+                          </td>
+
+                          {/* ACTIONS */}
+                          <td className="py-4 pl-4 text-right whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-3">
                               <button
-                                onClick={() => handleChangeOrderStatus(o.id, 'Processing')}
-                                className="text-rose-600 hover:text-rose-800 font-bold text-xs cursor-pointer hover:underline"
+                                onClick={() => handleOpenEdit(prod)}
+                                className="text-gray-400 hover:text-gray-800 transition-colors p-1 cursor-pointer"
+                                title="Edit Product"
                               >
-                                Return
+                                ✏️
                               </button>
-                            ) : (
                               <button
-                                onClick={() => handleDeleteOrder(o.id)}
-                                className="text-gray-400 hover:text-rose-600 text-sm transition-colors cursor-pointer"
-                                title="Delete order"
+                                onClick={() => handleDeleteProduct(prod.id, prod.name)}
+                                className="text-gray-400 hover:text-rose-600 transition-colors p-1 cursor-pointer"
+                                title="Delete Product"
                               >
                                 🗑️
                               </button>
-                            )}
+                            </div>
                           </td>
                         </tr>
                       )
@@ -662,289 +550,248 @@ export default function AdminDashboardPage({
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        ) : (
+          /* ======================================================== */
+          /* 3. ORDERS VIEW (Matching Reference Screenshot 3)         */
+          /* ======================================================== */
+          <div className="space-y-8 animate-fadeIn">
+            {/* Header & Filter */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900 tracking-tight">
+                  Orders
+                </h1>
+                <p className="text-sm text-gray-500 mt-1 font-sans">
+                  {orders.length} orders
+                </p>
+              </div>
 
-              {/* Table Footer */}
-              <div className="px-6 py-4 bg-gray-50/60 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
-                <span className="font-semibold">{filteredOrders.length} orders</span>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setOrders(orders)}
-                    className="px-4 py-1.5 rounded-md bg-white hover:bg-gray-100 text-gray-600 font-bold cursor-pointer border border-gray-200"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => alert('Orders saved!')}
-                    className="px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold cursor-pointer shadow-xs"
-                  >
-                    Save
-                  </button>
-                </div>
+              <div className="relative">
+                <select
+                  value={orderFilter}
+                  onChange={(e) => setOrderFilter(e.target.value as any)}
+                  className="bg-white border border-gray-200 text-gray-700 font-semibold text-xs px-5 py-2.5 rounded-full cursor-pointer hover:bg-gray-50 transition-colors outline-none shadow-2xs appearance-none pr-9"
+                >
+                  <option value="All">All Orders</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Canceled">Canceled</option>
+                </select>
+                <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">
+                  ▾
+                </span>
               </div>
             </div>
-          ) : activeSidebarTab === 'products' ? (
-            /* PRODUCTS & DEVICE MEDIA UPLOADER TAB */
-            <div className="space-y-6">
-              <div className="bg-white rounded-xl p-6 shadow-xs border border-gray-200 flex items-center justify-between">
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900 tracking-tight">
-                    Products Catalog &amp; Media Studio
-                  </h1>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Upload product videos and high-res images directly from your device to Supabase Storage CDN.
+
+            {/* Orders Table Container */}
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xs border border-gray-100/80 overflow-hidden min-h-[300px] flex flex-col justify-center">
+              {orders.length === 0 ? (
+                <div className="text-center py-16 space-y-2">
+                  <div className="text-4xl">🎉</div>
+                  <p className="text-sm font-semibold text-gray-500">
+                    No orders found for this filter.
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider ${
-                      isSupabaseConfigured
-                        ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                        : 'bg-amber-100 text-amber-800 border border-amber-200'
-                    }`}
-                  >
-                    {isSupabaseConfigured ? '🟢 Supabase CDN Active' : '🟠 Local Preview Mode'}
-                  </span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                {/* Form Column */}
-                <div className="lg:col-span-5 bg-white p-6 rounded-xl border border-gray-200 shadow-xs space-y-4">
-                  <div className="flex items-center justify-between border-b border-gray-100 pb-3">
-                    <h2 className="font-extrabold text-gray-900 text-sm font-sans">
-                      {editingProductId ? '✏️ Edit Product' : '➕ Add New Product'}
-                    </h2>
-                    {editingProductId && (
-                      <span className="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
-                        Editing Mode
-                      </span>
-                    )}
-                  </div>
-
-                  <form onSubmit={handleSaveProduct} className="space-y-4 text-xs font-medium">
-                    <div>
-                      <label className="block text-gray-700 mb-1 font-bold">Product Name</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-3 py-2 rounded-md border border-gray-200 text-xs text-gray-900 outline-none focus:border-blue-500"
-                        placeholder="e.g. Emerald Pearl Beaded Clutch"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-gray-700 mb-1 font-bold">Price ($ USD)</label>
-                        <input
-                          type="number"
-                          required
-                          value={formData.priceUSD}
-                          onChange={(e) => setFormData({ ...formData, priceUSD: Number(e.target.value) })}
-                          className="w-full px-3 py-2 rounded-md border border-gray-200 text-xs outline-none focus:border-blue-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-gray-700 mb-1 font-bold">Collection</label>
-                        <select
-                          value={formData.collection}
-                          onChange={(e) => setFormData({ ...formData, collection: e.target.value })}
-                          className="w-full px-2.5 py-2 rounded-md border border-gray-200 text-xs outline-none focus:border-blue-500 bg-white"
-                        >
-                          <option value="Best Sellers">Best Sellers</option>
-                          <option value="Handbags">Handbags</option>
-                          <option value="Shoulder Bags">Shoulder Bags</option>
-                          <option value="Evening">Evening</option>
-                          <option value="Clutches">Clutches</option>
-                          <option value="Bucket Bags">Bucket Bags</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    {/* Device Video File Upload */}
-                    <div className="bg-gray-50 p-3.5 rounded-lg border border-dashed border-blue-300 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="block text-blue-900 font-extrabold text-xs">
-                          🎥 Product Video (Upload from Device)
-                        </label>
-                        <span className="text-[10px] text-gray-400">MP4, WEBM</span>
-                      </div>
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => handleFileUpload(e, 'video')}
-                        className="block w-full text-xs text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
-                      />
-                    </div>
-
-                    {/* Device Image File Upload */}
-                    <div className="bg-gray-50 p-3.5 rounded-lg border border-dashed border-gray-300 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <label className="block text-gray-800 font-extrabold text-xs">
-                          🖼️ Product Image (Upload from Device)
-                        </label>
-                        <span className="text-[10px] text-gray-400">PNG, JPG</span>
-                      </div>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileUpload(e, 'image')}
-                        className="block w-full text-xs text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-gray-800 file:text-white hover:file:bg-gray-900 cursor-pointer"
-                      />
-                    </div>
-
-                    {uploadStatusMsg && (
-                      <div className="bg-blue-50 text-blue-700 p-2.5 rounded text-center text-xs font-bold animate-pulse">
-                        {uploadStatusMsg}
-                      </div>
-                    )}
-
-                    {/* Best Seller Checkbox */}
-                    <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={formData.isBestSeller}
-                        onChange={(e) => setFormData({ ...formData, isBestSeller: e.target.checked })}
-                        className="w-4 h-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
-                      />
-                      <span>Mark as Featured Best Seller</span>
-                    </label>
-
-                    <div className="pt-2 flex gap-2">
-                      <button
-                        type="submit"
-                        disabled={isUploading}
-                        className="flex-1 py-2.5 px-4 rounded-md bg-[#2563EB] hover:bg-blue-700 text-white font-bold text-xs cursor-pointer shadow-xs"
-                      >
-                        {editingProductId ? 'Save Changes' : 'Publish Product'}
-                      </button>
-                      {editingProductId && (
-                        <button
-                          type="button"
-                          onClick={resetForm}
-                          className="px-3 py-2.5 rounded-md bg-gray-100 text-gray-600 font-bold text-xs cursor-pointer hover:bg-gray-200"
-                        >
-                          Cancel
-                        </button>
-                      )}
-                    </div>
-                  </form>
-                </div>
-
-                {/* Catalog Table Column */}
-                <div className="lg:col-span-7 bg-white rounded-xl border border-gray-200 shadow-xs overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                    <h3 className="font-extrabold text-gray-900 text-sm">
-                      Catalog Items ({productsList.length})
-                    </h3>
-                  </div>
-
-                  <div className="divide-y divide-gray-100 max-h-[650px] overflow-y-auto">
-                    {productsList.map((p) => (
-                      <div key={p.id} className="p-4 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0 border border-gray-200">
-                            {p.video ? (
-                              <video src={p.video} autoPlay loop muted className="w-full h-full object-cover" />
-                            ) : (
-                              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                            )}
-                          </div>
-                          <div className="min-w-0">
-                            <h4 className="font-bold text-xs text-gray-900 truncate">{p.name}</h4>
-                            <div className="text-[11px] text-gray-500 font-medium">
-                              ${p.priceUSD} USD • {p.collection}
-                            </div>
-                          </div>
-                        </div>
-
-                        <button
-                          onClick={() => handleEditClick(p)}
-                          className="px-3 py-1.5 rounded bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-700 text-xs font-bold transition-all cursor-pointer border border-gray-200"
-                        >
-                          Edit
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : activeSidebarTab === 'dashboard' ? (
-            /* DASHBOARD OVERVIEW TAB */
-            <div className="space-y-6">
-              <h1 className="text-xl font-bold text-gray-900">Dashboard Overview</h1>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-2xs">
-                  <span className="text-xs text-gray-400 font-bold uppercase">Total Orders</span>
-                  <div className="text-2xl font-extrabold text-gray-900 mt-1">{orders.length} orders</div>
-                </div>
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-2xs">
-                  <span className="text-xs text-gray-400 font-bold uppercase">Total Revenue</span>
-                  <div className="text-2xl font-extrabold text-blue-600 mt-1">
-                    NT$ {orders.reduce((acc, o) => acc + o.total, 0).toLocaleString()}
-                  </div>
-                </div>
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-2xs">
-                  <span className="text-xs text-gray-400 font-bold uppercase">Catalog Products</span>
-                  <div className="text-2xl font-extrabold text-gray-900 mt-1">{productsList.length} items</div>
-                </div>
-                <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-2xs">
-                  <span className="text-xs text-gray-400 font-bold uppercase">CDN Storage</span>
-                  <div className="text-xs font-bold text-teal-600 mt-2">
-                    {isSupabaseConfigured ? '🟢 Connected' : '🟠 Demo Mode'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : activeSidebarTab === 'customers' ? (
-            /* CUSTOMERS TAB */
-            <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-6 space-y-4">
-              <h1 className="text-xl font-bold text-gray-900">Customer Directory</h1>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-gray-700">
-                  <thead className="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-[10px]">
-                    <tr>
-                      <th className="py-3 px-4">Name</th>
-                      <th className="py-3 px-4">Email</th>
-                      <th className="py-3 px-4">Total Spent</th>
-                      <th className="py-3 px-4">Status</th>
+              ) : (
+                <table className="w-full text-left text-xs font-sans">
+                  <thead>
+                    <tr className="text-gray-400 font-bold uppercase tracking-wider text-[11px] border-b border-gray-100 pb-4">
+                      <th className="pb-4 font-semibold">CUSTOMER</th>
+                      <th className="pb-4 font-semibold">DATE</th>
+                      <th className="pb-4 font-semibold">TOTAL</th>
+                      <th className="pb-4 font-semibold">STATUS</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-gray-100/80">
                     {orders.map((o) => (
-                      <tr key={o.id} className="hover:bg-gray-50">
-                        <td className="py-3 px-4 font-bold text-gray-900">{o.customer}</td>
-                        <td className="py-3 px-4 text-gray-500">{o.email}</td>
-                        <td className="py-3 px-4 font-bold text-gray-900">NT$ {o.total}</td>
-                        <td className="py-3 px-4">
-                          <span className="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            Active Buyer
+                      <tr key={o.id} className="hover:bg-gray-50/60">
+                        <td className="py-4 font-bold text-gray-900">{o.customer}</td>
+                        <td className="py-4 text-gray-500">{o.date}</td>
+                        <td className="py-4 font-bold text-gray-900">{formatNaira(o.total)}</td>
+                        <td className="py-4">
+                          <span className="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full text-[11px]">
+                            {o.status}
                           </span>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-              </div>
+              )}
             </div>
-          ) : (
-            /* SETTINGS TAB */
-            <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-6 space-y-4">
-              <h1 className="text-xl font-bold text-gray-900">Store &amp; Supabase Settings</h1>
-              <p className="text-xs text-gray-600">
-                Manage cloud storage credentials, store settings, and database integration.
-              </p>
-              <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-2 text-xs font-medium">
-                <div><strong>Supabase Connection Status:</strong> {isSupabaseConfigured ? '🟢 Active' : '🟠 Not Configured (Using Local Fallback)'}</div>
-                <div><strong>Storage Bucket:</strong> product-media</div>
-              </div>
+          </div>
+        )}
+      </main>
+
+      {/* ======================================================== */}
+      {/* 4. MODAL: ADD / EDIT PRODUCT                             */}
+      {/* ======================================================== */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 font-sans animate-fadeIn">
+          <div className="bg-white text-gray-900 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 my-6">
+            {/* Modal Header */}
+            <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-lg font-serif font-bold text-gray-900">
+                {editingProductId ? 'Edit Product' : 'New Product'}
+              </h3>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-900 flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
             </div>
-          )}
-        </main>
-      </div>
+
+            {/* Modal Form */}
+            <form onSubmit={handleSaveProduct} className="p-6 space-y-4 text-xs font-medium">
+              {/* Product Name */}
+              <div>
+                <label className="block text-gray-700 mb-1 font-bold">Product Name</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C]"
+                  placeholder="e.g. Handcrafted Teardrop Resin Drop Earrings"
+                />
+              </div>
+
+              {/* Category & Prices */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-gray-700 mb-1 font-bold">Category</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C] bg-white"
+                  >
+                    <option value="Jewelry">Jewelry</option>
+                    <option value="Daily-Accessories">Daily-Accessories</option>
+                    <option value="Home-Decor">Home-Decor</option>
+                    <option value="Handbags">Handbags</option>
+                    <option value="Shoulder Bags">Shoulder Bags</option>
+                    <option value="Evening">Evening</option>
+                    <option value="Clutches">Clutches</option>
+                    <option value="Bucket Bags">Bucket Bags</option>
+                    <option value="Best Sellers">Best Sellers</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 mb-1 font-bold">Base Price (₦ Naira)</label>
+                  <input
+                    type="number"
+                    required
+                    value={formData.priceNaira}
+                    onChange={(e) => {
+                      const naira = Number(e.target.value)
+                      setFormData({
+                        ...formData,
+                        priceNaira: naira,
+                        priceUSD: Math.round(naira / 105) || 1,
+                      })
+                    }}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 mb-1 font-bold">Price ($ USD)</label>
+                  <input
+                    type="number"
+                    required
+                    value={formData.priceUSD}
+                    onChange={(e) => {
+                      const usd = Number(e.target.value)
+                      setFormData({
+                        ...formData,
+                        priceUSD: usd,
+                        priceNaira: Math.round(usd * 105),
+                      })
+                    }}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C]"
+                  />
+                </div>
+              </div>
+
+              {/* Color & Material */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-gray-700 mb-1 font-bold">Color</label>
+                  <input
+                    type="text"
+                    value={formData.color}
+                    onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C]"
+                    placeholder="e.g. Gold / Black"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 mb-1 font-bold">Material</label>
+                  <input
+                    type="text"
+                    value={formData.material}
+                    onChange={(e) => setFormData({ ...formData, material: e.target.value })}
+                    className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-xs text-gray-900 outline-none focus:border-[#8C6B1C]"
+                    placeholder="e.g. Glass & Resin"
+                  />
+                </div>
+              </div>
+
+              {/* Product Image File / URL */}
+              <div className="bg-gray-50 p-3.5 rounded-2xl border border-dashed border-gray-300 space-y-2">
+                <label className="block text-gray-800 font-bold text-xs">
+                  🖼️ Product Image (Upload from device or enter URL)
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleDeviceFileUpload(e, 'image')}
+                  className="block w-full text-xs text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#8C6B1C] file:text-white cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white text-gray-900 outline-none"
+                  placeholder="/images/bags-with-beads-1.png"
+                />
+              </div>
+
+              {/* Featured Checkbox */}
+              <label className="flex items-center gap-2 cursor-pointer font-bold text-gray-700 pt-1">
+                <input
+                  type="checkbox"
+                  checked={formData.isBestSeller}
+                  onChange={(e) => setFormData({ ...formData, isBestSeller: e.target.checked })}
+                  className="w-4 h-4 rounded text-[#8C6B1C] focus:ring-0 cursor-pointer"
+                />
+                <span>Feature in Best Sellers</span>
+              </label>
+
+              {/* Form Action Buttons */}
+              <div className="pt-3 flex gap-3">
+                <button
+                  type="submit"
+                  className="flex-1 py-3 px-4 rounded-full bg-[#8C6B1C] hover:bg-[#785B17] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer"
+                >
+                  {editingProductId ? 'Save Changes' : 'Create Product'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="py-3 px-6 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

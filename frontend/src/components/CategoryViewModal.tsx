@@ -6,15 +6,23 @@ interface CategoryViewModalProps {
   categoryName: string | null
   onClose: () => void
   onSelectProduct?: (product: Product) => void
+  products?: Product[]
 }
 
-export default function CategoryViewModal({ categoryName, onClose, onSelectProduct }: CategoryViewModalProps) {
+export default function CategoryViewModal({
+  categoryName,
+  onClose,
+  onSelectProduct,
+  products: propsProducts,
+}: CategoryViewModalProps) {
   const [sortOption, setSortOption] = useState<'featured' | 'price-low' | 'price-high'>('featured')
 
   if (!categoryName) return null
 
+  const activeProducts = propsProducts || products
+
   // Filter products by collection or category keyword
-  const filteredProducts = products.filter((p) => {
+  const filteredProducts = activeProducts.filter((p: Product) => {
     const term = categoryName.toLowerCase().replace('beaded ', '')
     return (
       p.name.toLowerCase().includes(term) ||

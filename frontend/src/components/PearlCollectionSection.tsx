@@ -4,9 +4,15 @@ import { products, type Product } from '../data/products'
 interface PearlCollectionSectionProps {
   onOpenCollections?: () => void
   onSelectProduct?: (product: Product) => void
+  products?: Product[]
 }
 
-export default function PearlCollectionSection({ onOpenCollections, onSelectProduct }: PearlCollectionSectionProps) {
+export default function PearlCollectionSection({
+  onOpenCollections,
+  onSelectProduct,
+  products: propsProducts,
+}: PearlCollectionSectionProps) {
+  const activeProducts = propsProducts || products
   const pearlProductIds = [
     'baby-pink-beaded-bag',
     'white-pearl-beaded-bag',
@@ -17,7 +23,9 @@ export default function PearlCollectionSection({ onOpenCollections, onSelectProd
     'trendy-bead-bucket-bag',
   ]
 
-  const pearlProducts = products.filter((p) => pearlProductIds.includes(p.id))
+  const pearlProducts = activeProducts.filter(
+    (p: Product) => pearlProductIds.includes(p.id) || p.name.toLowerCase().includes('pearl') || p.collection.toLowerCase().includes('pearl')
+  )
 
   return (
     <div className="bg-[#FFF6F0] border-t border-gray-100 py-4">

@@ -6,6 +6,7 @@ interface CollectionsPageProps {
   onSelectCategory: (name: string) => void
   onBackToHome: () => void
   onSelectProduct?: (product: Product) => void
+  products?: Product[]
 }
 
 export const collectionGridCards = [
@@ -61,17 +62,23 @@ export const collectionGridCards = [
   },
 ]
 
-export default function CollectionsPage({ onSelectCategory, onBackToHome, onSelectProduct }: CollectionsPageProps) {
+export default function CollectionsPage({
+  onSelectCategory,
+  onBackToHome,
+  onSelectProduct,
+  products: propsProducts,
+}: CollectionsPageProps) {
   const [lineupTab, setLineupTab] = useState<'Best Sellers' | 'Beaded Handbags' | 'Beaded Evening Bag'>('Best Sellers')
+  const activeProductsList = propsProducts || products
 
   const getLineupProducts = () => {
     if (lineupTab === 'Best Sellers') {
-      return products.filter((p) => p.isBestSeller)
+      return activeProductsList.filter((p: Product) => p.isBestSeller)
     }
     if (lineupTab === 'Beaded Handbags') {
-      return products.filter((p) => p.collection === 'Handbags' || p.id.includes('handbag'))
+      return activeProductsList.filter((p: Product) => p.collection === 'Handbags' || p.id.includes('handbag'))
     }
-    return products.filter((p) => p.collection === 'Evening' || p.id.includes('clutch'))
+    return activeProductsList.filter((p: Product) => p.collection === 'Evening' || p.id.includes('clutch'))
   }
 
   const lineupProducts = getLineupProducts()
@@ -149,7 +156,7 @@ export default function CollectionsPage({ onSelectCategory, onBackToHome, onSele
 
         {/* Lineup Horizontal Carousel Grid */}
         <div className="flex gap-5 overflow-x-auto no-scrollbar py-2 snap-x snap-mandatory">
-          {lineupProducts.map((product) => (
+          {lineupProducts.map((product: Product) => (
             <div
               key={product.id}
               className="flex-none w-[70vw] sm:w-[42vw] lg:w-[23.5%] snap-start"

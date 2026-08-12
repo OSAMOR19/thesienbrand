@@ -7,18 +7,21 @@ interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
   onSelectProduct?: (product: Product) => void
+  products?: Product[]
 }
 
-export default function SearchModal({ isOpen, onClose, onSelectProduct }: SearchModalProps) {
+export default function SearchModal({ isOpen, onClose, onSelectProduct, products: propsProducts }: SearchModalProps) {
   const [query, setQuery] = useState('')
   const { formatPrice } = useCurrency()
   const addToCart = useCartStore((s) => s.add)
 
   if (!isOpen) return null
 
+  const activeProducts = propsProducts || products
+
   const filtered = query.trim()
-    ? products.filter(
-        (p) =>
+    ? activeProducts.filter(
+        (p: Product) =>
           p.name.toLowerCase().includes(query.toLowerCase()) ||
           p.color.toLowerCase().includes(query.toLowerCase()) ||
           p.collection.toLowerCase().includes(query.toLowerCase()) ||
@@ -88,7 +91,7 @@ export default function SearchModal({ isOpen, onClose, onSelectProduct }: Search
                 Products ({filtered.length})
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {filtered.map((p) => (
+                {filtered.map((p: Product) => (
                   <div
                     key={p.id}
                     className="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 hover:border-[#3B1E2B]/30 hover:bg-[#3B1E2B]/5 transition-all group cursor-pointer"

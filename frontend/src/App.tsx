@@ -42,10 +42,28 @@ export default function App() {
   const [activePolicy, setActivePolicy] = useState<string | null>(null)
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
 
-  // Admin & Products State
-  const [customProducts, setCustomProducts] = useState<Product[]>(products)
+  // Admin & Products State (with LocalStorage persistence)
+  const [customProducts, setCustomProducts] = useState<Product[]>(() => {
+    try {
+      const saved = localStorage.getItem('sien_custom_products')
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed
+      }
+    } catch {}
+    return products
+  })
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false)
   const [adminEmail, setAdminEmail] = useState('')
+
+  const handleUpdateProducts = (updated: Product[]) => {
+    setCustomProducts(updated)
+    try {
+      localStorage.setItem('sien_custom_products', JSON.stringify(updated))
+    } catch (e) {
+      console.error('Failed to save custom products to localStorage', e)
+    }
+  }
 
   const bestSellers = customProducts.filter((p) => p.isBestSeller)
 
@@ -238,6 +256,7 @@ export default function App() {
       <main>
         {currentView === 'collections' ? (
           <CollectionsPage
+            products={customProducts}
             onSelectCategory={(cat) => setActiveCategory(cat)}
             onBackToHome={() => navigateToView('home')}
             onSelectProduct={handleSelectProduct}
@@ -278,7 +297,7 @@ export default function App() {
         ) : currentView === 'admin' ? (
           <AdminDashboardPage
             productsList={customProducts}
-            onUpdateProducts={(updated) => setCustomProducts(updated)}
+            onUpdateProducts={handleUpdateProducts}
             onBackToHome={() => navigateToView('home')}
             isAdminLoggedIn={isAdminLoggedIn}
             adminEmail={adminEmail}
@@ -335,6 +354,7 @@ export default function App() {
 
             {/* 8. Pearl Beaded Bags Dedicated Carousel */}
             <PearlCollectionSection
+              products={customProducts}
               onOpenCollections={() => navigateToView('collections')}
               onSelectProduct={handleSelectProduct}
             />
@@ -382,11 +402,13 @@ export default function App() {
         onClose={() => setIsCurrencyModalOpen(false)}
       />
       <SearchModal
+        products={customProducts}
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
         onSelectProduct={handleSelectProduct}
       />
       <CategoryViewModal
+        products={customProducts}
         categoryName={activeCategory}
         onClose={() => setActiveCategory(null)}
         onSelectProduct={handleSelectProduct}
