@@ -744,7 +744,7 @@ export default function AdminDashboardPage({
               {/* Product Image File / URL */}
               <div className="bg-gray-50 p-3.5 rounded-2xl border border-dashed border-gray-300 space-y-2">
                 <label className="block text-gray-800 font-bold text-xs">
-                  🖼️ Product Image (Upload from device or enter URL)
+                  🖼️ Product Main Image (Upload from device or enter URL)
                 </label>
                 <input
                   type="file"
@@ -759,6 +759,42 @@ export default function AdminDashboardPage({
                   className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white text-gray-900 outline-none"
                   placeholder="/images/bags-with-beads-1.png"
                 />
+                {formData.image && (
+                  <div className="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 mt-1">
+                    <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+              </div>
+
+              {/* Product Video File / URL */}
+              <div className="bg-amber-50/50 p-3.5 rounded-2xl border border-dashed border-[#8C6B1C]/40 space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="block text-gray-900 font-bold text-xs">
+                    🎥 Product Video (Upload from device or enter URL)
+                  </label>
+                  <span className="text-[10px] text-gray-400 font-normal">MP4, WEBM</span>
+                </div>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={(e) => handleDeviceFileUpload(e, 'video')}
+                  className="block w-full text-xs text-gray-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#8C6B1C] file:text-white cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={formData.video}
+                  onChange={(e) => setFormData({ ...formData, video: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white text-gray-900 outline-none"
+                  placeholder="/videos/black-beaded-purse.mp4 or https://..."
+                />
+                {formData.video && (
+                  <div className="relative aspect-[16/9] max-h-36 bg-black rounded-xl overflow-hidden border border-gray-300 mt-2">
+                    <video src={formData.video} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                    <span className="absolute top-2 left-2 bg-rose-600 text-white font-extrabold text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      LIVE VIDEO PREVIEW
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Featured Checkbox */}
